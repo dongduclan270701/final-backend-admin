@@ -5,7 +5,7 @@ const getFullUser = async (req, res) => {
 
     try {
         const data = req.query
-        const result = await userAdminService.getFullUser(data)
+        const result = await userAdminService.getFullUser(data, req.result)
         res.status(HttpStatusCode.OK).json(result)
 
     } catch (error) {
@@ -15,10 +15,10 @@ const getFullUser = async (req, res) => {
     }
 }
 
-const getFullOrderInformation = async (req, res) => {
+const getUserInformation = async (req, res) => {
     try {
         const { id } = req.params
-        const result = await userAdminService.getFullOrderInformation(id)
+        const result = await userAdminService.getUserInformation(id)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -27,10 +27,10 @@ const getFullOrderInformation = async (req, res) => {
     }
 }
 
-const getSearchOrder = async (req, res) => {
+const getSearchUser = async (req, res) => {
     try {
         const data = req.query
-        const result = await userAdminService.getSearchOrder(data)
+        const result = await userAdminService.getSearchUser(data)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -39,10 +39,10 @@ const getSearchOrder = async (req, res) => {
     }
 }
 
-const update = async (req, res) => {
+const updateStatusUser = async (req, res) => {
     try {
         const { id } = req.params
-        const result = await userAdminService.update(id, req.body)
+        const result = await userAdminService.updateStatusUser(id, req.body)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -52,5 +52,8 @@ const update = async (req, res) => {
 }
 
 export const userAdminController = { 
-    getFullUser
+    getFullUser,
+    getSearchUser,
+    getUserInformation,
+    updateStatusUser
 }

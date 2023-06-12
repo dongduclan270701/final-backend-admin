@@ -29,7 +29,7 @@ const authAdmin = (req, res, next) => {
 }
 
 router.route('/')
-    .get(adminController.getAllEmployee)
+    .get(authAdmin, adminController.getAllEmployee)
     .post(authAdmin, AdminValidation.createNewEmployee, adminController.createNewEmployee)
 
 router.route('/login/:email/:password')

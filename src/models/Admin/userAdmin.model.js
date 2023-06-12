@@ -5,14 +5,11 @@ import { ObjectId } from 'mongodb'
 // Define Board collection
 const userCollectionName = 'users'
 
-const update = async (id, data) => {
+const updateStatusUser = async (id, data) => {
     try {
-        const updateData = {
-            ...data
-        }
         const updateUser = await getDB().collection(userCollectionName).findOneAndUpdate(
             { _id: ObjectId(id) },
-            { $set: updateData },
+            { $set: { status: data.status } },
             { returnDocument: 'after' }
         )
         return updateUser.value
@@ -22,24 +19,66 @@ const update = async (id, data) => {
 }
 
 
-const getFullUser = async (data) => {
+const getFullUser = async (data, role) => {
     try {
         let perPage = 10
         let page = parseInt(data.count)
         const result = await getDB().collection(userCollectionName).find({}).skip((perPage * page) - perPage).limit(perPage).toArray()
         const resultTotal = await getDB().collection(userCollectionName).find({}).toArray()
+        return { data: [...result], total: resultTotal.length, role: role.role }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getSearchUser = async (data) => {
+    try {
+        let perPage = 10
+        let page = parseInt(data.count)
+        let status = data.status
+        if (status === '') {
+            status = { $in: [true, false] }
+        } else {
+            status = status === 'true' ? true : false
+        }
+        const result = await getDB().collection(userCollectionName).aggregate([
+            {
+                $match: {
+                    email: { $regex: new RegExp(`${data.email}`) },
+                    status: status,
+                    _destroy: false
+                }
+            },
+            {
+                $addFields: {
+                    orderCount: { $size: '$orders' }
+                }
+            },
+            {
+                $sort: { orderCount: data.sort === 'asc' ? -1 : 1 }
+            }
+        ]).skip((perPage * page) - perPage).limit(perPage).toArray()
+        const resultTotal = await getDB().collection(userCollectionName).aggregate([
+            {
+                $match: {
+                    email: { $regex: new RegExp(`${data.email}`) },
+                    status: status,
+                    _destroy: false
+                }
+            }
+        ]).toArray()
         return { data: [...result], total: resultTotal.length }
     } catch (error) {
         throw new Error(error)
     }
 }
 
-const getFullUserInformation = async (userId) => {
+const getUserInformation = async (id) => {
     try {
         const result = await getDB().collection(userCollectionName).aggregate([
             {
                 $match: {
-                    _id: ObjectId(userId),
+                    _id: ObjectId(id),
                     _destroy: false
                 }
             }
@@ -50,6 +89,9 @@ const getFullUserInformation = async (userId) => {
     }
 }
 
-export const userAdminModel = { 
-    getFullUser
+export const userAdminModel = {
+    getFullUser,
+    getSearchUser,
+    getUserInformation,
+    updateStatusUser
 }

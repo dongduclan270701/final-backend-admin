@@ -60,9 +60,9 @@ const updateStatusEmployee = async (email, data) => {
     }
 }
 
-const getAllEmployee = async (data) => {
+const getAllEmployee = async (data, role) => {
     try {
-        const listOfEmployee = await AdminModel.getAllEmployee(data)
+        const listOfEmployee = await AdminModel.getAllEmployee(data, role)
         const transformEmployee = cloneDeep(listOfEmployee)
         return transformEmployee
     } catch (error) {

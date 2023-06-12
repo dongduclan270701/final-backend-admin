@@ -2,9 +2,9 @@ import { userAdminModel } from '*/models/Admin/userAdmin.model'
 import { cloneDeep } from 'lodash'
 
 
-const getFullUser = async (data) => {
+const getFullUser = async (data, role) => {
     try {
-        const user = await userAdminModel.getFullUser(data)
+        const user = await userAdminModel.getFullUser(data, role)
         const transformUser = cloneDeep(user)
         return transformUser
     } catch (error) {
@@ -12,21 +12,19 @@ const getFullUser = async (data) => {
     }
 }
 
-const getSearchOrder = async (data) => {
+const getSearchUser = async (data) => {
     try {
-        const order = await userAdminModel.getSearchOrder(data)
-
-        const transfromUser = cloneDeep(order)
-
-        return transfromUser
+        const user = await userAdminModel.getSearchUser(data)
+        const transformUser = cloneDeep(user)
+        return transformUser
     } catch (error) {
         throw new Error(error)
     }
 }
 
-const getFullOrderInformation = async (orderId) => {
+const getUserInformation = async (id) => {
     try {
-        const user = await userAdminModel.getFullOrderInformation(orderId)
+        const user = await userAdminModel.getUserInformation(id)
         if (!user) {
             throw new Error('not Found')
         }
@@ -39,17 +37,18 @@ const getFullOrderInformation = async (orderId) => {
     }
 }
 
-const update = async (src, data) => {
+const updateStatusUser = async (id, data) => {
     try {
-        const updateData = {
-            ...data,
-            updateAt: Date.now()
-        }
-        const updatedUser = await userAdminModel.update(src, updateData)
+        const updatedUser = await userAdminModel.updateStatusUser(id, data)
         return updatedUser
     } catch (error) {
         throw new Error(error)
     }
 }
 
-export const userAdminService = { getFullUser }
+export const userAdminService = { 
+    getFullUser,
+    getSearchUser,
+    getUserInformation,
+    updateStatusUser
+}

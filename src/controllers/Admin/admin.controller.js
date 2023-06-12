@@ -93,7 +93,7 @@ const updateStatusEmployee = async (req, res) => {
 const getAllEmployee = async (req, res) => {
     try {
         const data = req.query
-        const result = await adminService.getAllEmployee(data)
+        const result = await adminService.getAllEmployee(data, req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({

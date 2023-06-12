@@ -84,7 +84,7 @@ const getFullOrderInformation = async (id) => {
         const result = await getDB().collection(orderName).aggregate([
             {
                 $match: {
-                    _id: ObjectId(id),
+                    orderId: id,
                     _destroy: false
                 }
             }

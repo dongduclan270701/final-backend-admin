@@ -142,13 +142,13 @@ const getInformationEmployee = async (employeeId) => {
     }
 }
 
-const getAllEmployee = async (data) => {
+const getAllEmployee = async (data, role) => {
     try {
         let perPage = 10
         let page = parseInt(data.count)
         const result = await getDB().collection(employeeCollectionName).find().limit(perPage).skip((perPage * page) - perPage).toArray()
         const resultTotal = await getDB().collection(employeeCollectionName).find().toArray()
-        return { data: [...result], total: resultTotal.length }
+        return { data: [...result], total: resultTotal.length, role: role.role }
     } catch (error) {
         throw new Error(error)
     }
