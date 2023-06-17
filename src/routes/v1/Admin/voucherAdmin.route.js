@@ -1,6 +1,6 @@
 import express from 'express'
-import { orderAdminController } from '*/controllers/Admin/orderAdmin.controller'
-import { orderAdminValidation } from '*/validations/orderAdmin.validation'
+import { voucherAdminController } from '*/controllers/Admin/voucherAdmin.controller'
+import { voucherValidation } from '*/validations/voucher.validation'
 import jwt from 'jsonwebtoken'
 import { HttpStatusCode } from '*/utils/constants'
 
@@ -13,8 +13,6 @@ const authAdmin = (req, res, next) => {
         const verified = jwt.verify(token, process.env.TOKEN_SECRET_ADMIN)
         req.result = verified
         if (verified.role === 'CEO') {
-            next()
-        } else if (verified.role === 'ORDER') {
             next()
         } else if (verified.role === 'DEVELOPER') {
             next()
@@ -31,16 +29,14 @@ const authAdmin = (req, res, next) => {
 const router = express.Router()
 
 router.route('/')
-    .get(authAdmin, orderAdminController.getFullOrder)
+    .get(authAdmin, voucherAdminController.getFullVoucher)
+    .post(authAdmin, voucherValidation.createNewVoucher, voucherAdminController.createNewVoucher)
 
 router.route('/search')
-    .get(authAdmin, orderAdminController.getSearchOrder)
+    .get(authAdmin, voucherAdminController.getSearchVoucher)
 
-router.route('/:id')
-    .get(authAdmin, orderAdminController.getFullOrderInformation)
-    .put(authAdmin, orderAdminValidation.updateOrder, orderAdminController.updateOrder)
+router.route('/details/:id')
+    .get(authAdmin, voucherAdminController.getVoucherInformation)
+    .put(authAdmin, voucherAdminController.updateVoucher)
 
-router.route('/ratingOrder/:id')
-    .put(authAdmin, orderAdminController.ratingOrder)
-    
-export const orderAdminRoutes = router
+export const voucherAdminRoutes = router

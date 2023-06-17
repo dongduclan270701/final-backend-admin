@@ -30,7 +30,7 @@ const getFullLaptopCollecting = async (req, res) => {
 
     try {
         const data = req.query
-        const result = await laptopCollectingService.getFullLaptopCollecting(data)
+        const result = await laptopCollectingService.getFullLaptopCollecting(data, req.result)
         
         res.status(HttpStatusCode.OK).json(result)
 

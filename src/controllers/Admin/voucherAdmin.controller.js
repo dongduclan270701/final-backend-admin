@@ -1,10 +1,22 @@
-import { orderAdminService } from '*/services/Admin/orderAdmin.service'
+import { voucherAdminService } from '*/services/Admin/voucherAdmin.service'
 import { HttpStatusCode } from '*/utils/constants'
 
-const getFullOrder = async (req, res) => {
+const createNewVoucher = async (req, res) => {
+    try {
+        const data = req.body
+        const result = await voucherAdminService.createNewVoucher(data, req.result)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            error: error.message
+        })
+    }
+}
+const getFullVoucher = async (req, res) => {
+
     try {
         const data = req.query
-        const result = await orderAdminService.getFullOrder(data, req.result)
+        const result = await voucherAdminService.getFullVoucher(data, req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -13,10 +25,10 @@ const getFullOrder = async (req, res) => {
     }
 }
 
-const getFullOrderInformation = async (req, res) => {
+const getVoucherInformation = async (req, res) => {
     try {
         const { id } = req.params
-        const result = await orderAdminService.getFullOrderInformation(id)
+        const result = await voucherAdminService.getVoucherInformation(id, req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -25,10 +37,10 @@ const getFullOrderInformation = async (req, res) => {
     }
 }
 
-const getSearchOrder = async (req, res) => {
+const getSearchVoucher = async (req, res) => {
     try {
         const data = req.query
-        const result = await orderAdminService.getSearchOrder(data)
+        const result = await voucherAdminService.getSearchVoucher(data)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -37,22 +49,10 @@ const getSearchOrder = async (req, res) => {
     }
 }
 
-const updateOrder = async (req, res) => {
+const updateVoucher = async (req, res) => {
     try {
         const { id } = req.params
-        const result = await orderAdminService.updateOrder(id, req.body, req.result)
-        res.status(HttpStatusCode.OK).json(result)
-    } catch (error) {
-        res.status(HttpStatusCode.INTERNAL_SERVER).json({
-            error: error.message00
-        })
-    }
-}
-
-const ratingOrder = async (req, res) => {
-    try {
-        const { id } = req.params
-        const result = await orderAdminService.ratingOrder(id, req.body)
+        const result = await voucherAdminService.updateVoucher(id, req.body, req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -61,10 +61,10 @@ const ratingOrder = async (req, res) => {
     }
 }
 
-export const orderAdminController = { 
-    getSearchOrder, 
-    getFullOrderInformation, 
-    getFullOrder, 
-    updateOrder,
-    ratingOrder
+export const voucherAdminController = { 
+    createNewVoucher,
+    getFullVoucher,
+    getSearchVoucher,
+    getVoucherInformation,
+    updateVoucher
 }

@@ -80,13 +80,13 @@ const update = async (src, data) => {
 }
 
 
-const getFullLaptopCollecting = async (data) => {
+const getFullLaptopCollecting = async (data, role) => {
     try {
         let perPage = 10
         let page = parseInt(data.count)
         const result = await getDB().collection(laptopCollectionName).find().limit(perPage).skip((perPage * page) - perPage).toArray()
         const resultTotal = await getDB().collection(laptopCollectionName).find().toArray()
-        return { data: [...result], total: resultTotal.length }
+        return { data: [...result], total: resultTotal.length, role: role.role }
     } catch (error) {
         throw new Error(error)
     }
@@ -112,85 +112,35 @@ const getSearchLaptopInformation = async (data) => {
     try {
         let perPage = 10
         let page = parseInt(data.count)
-        
-        if (!data.category) {
-            const result = await getDB().collection(laptopCollectionName).aggregate([
-                {
-                    $match: {
-                        nameProduct: { $regex: new RegExp(`${data.nameProduct}`) },
-                        _destroy: false
-                    }
+        const filteredCategory = data.category.filter(Boolean)
+        const result = await getDB().collection(laptopCollectionName).aggregate([
+            {
+                $match: {
+                    nameProduct: { $regex: new RegExp(`${data.nameProduct}`) },
+                    category: filteredCategory.length > 0 ? { $all: filteredCategory } : { $exists: true },
+                    _destroy: false
                 }
-            ]).skip((perPage * page) - perPage).limit(perPage).toArray()
-            const resultTotal = await getDB().collection(laptopCollectionName).aggregate([
-                {
-                    $match: {
-                        nameProduct: { $regex: new RegExp(`${data.nameProduct}`) },
-                        _destroy: false
-                    }
+            }
+        ]).skip((perPage * page) - perPage).limit(perPage).toArray()
+        const resultTotal = await getDB().collection(laptopCollectionName).aggregate([
+            {
+                $match: {
+                    nameProduct: { $regex: new RegExp(`${data.nameProduct}`) },
+                    category: filteredCategory.length > 0 ? { $all: filteredCategory } : { $exists: true },
+                    _destroy: false
                 }
-            ]).toArray()
-            return { data: [...result], total: resultTotal.length }
-        } else {
-            let newCategory = data.category.filter(category => category !== 'Chọn loại' && category !== 'Chọn loại CPU' && category !== 'Chọn mức giá')
-
-            let newData
-            if (newCategory[0] === 'Chọn danh mục') {
-                newData = { ...data, category: [] }
-            } else {
-                newData = { ...data, category: newCategory }
             }
-            if (newData.category.length > 0) {
-                const result = await getDB().collection(laptopCollectionName).aggregate([
-                    {
-                        $match: {
-                            nameProduct: { $regex: new RegExp(`${newData.nameProduct}`) },
-                            category: { $all: newData.category },
-                            _destroy: false
-                        }
-                    }
-                ]).skip((perPage * page) - perPage).limit(perPage).toArray()
-                const resultTotal = await getDB().collection(laptopCollectionName).aggregate([
-                    {
-                        $match: {
-                            nameProduct: { $regex: new RegExp(`${newData.nameProduct}`) },
-                            category: { $all: newData.category },
-                            _destroy: false
-                        }
-                    }
-                ]).toArray()
-                return { data: [...result], total: resultTotal.length }
-            }
-            else {
-                const result = await getDB().collection(laptopCollectionName).aggregate([
-                    {
-                        $match: {
-                            nameProduct: { $regex: new RegExp(`${newData.nameProduct}`) },
-                            _destroy: false
-                        }
-                    }
-                ]).skip((perPage * page) - perPage).limit(perPage).toArray()
-                const resultTotal = await getDB().collection(laptopCollectionName).aggregate([
-                    {
-                        $match: {
-                            nameProduct: { $regex: new RegExp(`${newData.nameProduct}`) },
-                            _destroy: false
-                        }
-                    }
-                ]).toArray()
-                return { data: [...result], total: resultTotal.length }
-            }
-        }
-
+        ]).toArray()
+        return { data: [...result], total: resultTotal.length };
     } catch (error) {
         throw new Error(error)
     }
 }
-export const laptopCollectingModel = { 
-    createNew, 
-    getFullLaptopInformationAdmin, 
-    getFullLaptopCollecting, 
-    update, 
-    findOneById, 
-    getSearchLaptopInformation 
+export const laptopCollectingModel = {
+    createNew,
+    getFullLaptopInformationAdmin,
+    getFullLaptopCollecting,
+    update,
+    findOneById,
+    getSearchLaptopInformation
 }

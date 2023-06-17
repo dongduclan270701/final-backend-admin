@@ -38,7 +38,4 @@ router.route('/:id')
     .get(authAdmin, userAdminController.getUserInformation)
     .put(authAdmin, userAdminController.updateStatusUser)
 
-// router.route('/:id')
-//     .put(authAdmin, orderAdminValidation.update, userAdminController.update)
-
 export const userAdminRoutes = router

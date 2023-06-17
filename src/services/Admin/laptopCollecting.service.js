@@ -18,9 +18,9 @@ const createNew = async (data) => {
     }
 }
 
-const getFullLaptopCollecting = async (data) => {
+const getFullLaptopCollecting = async (data, role) => {
     try {
-        const laptopCollecting = await laptopCollectingModel.getFullLaptopCollecting(data)
+        const laptopCollecting = await laptopCollectingModel.getFullLaptopCollecting(data, role)
 
         const transfromUser = cloneDeep(laptopCollecting)
 

@@ -4,6 +4,8 @@ import { laptopCollectingRoutes } from './Admin/laptopCollecting.route'
 import { orderAdminRoutes } from './Admin/orderAdmin.route'
 import { adminRoutes } from './Admin/admin.route'
 import { userAdminRoutes } from './Admin/userAdmin.route'
+import { voucherAdminRoutes } from './Admin/voucherAdmin.route'
+import { collectingAdminRoutes } from './Admin/collectingAdmin.route'
 const router = express.Router()
 
 // GET v1/status
@@ -19,5 +21,9 @@ router.use('/managementUser', userAdminRoutes)
 router.use('/laptopCollecting', laptopCollectingRoutes)
 
 router.use('/orderAdmin', orderAdminRoutes)
+
+router.use('/voucherAdmin', voucherAdminRoutes)
+
+router.use('/collecting', collectingAdminRoutes)
 
 export const apiV1 = router

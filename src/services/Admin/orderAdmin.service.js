@@ -1,9 +1,9 @@
 import { orderAdminModel } from '*/models/Admin/orderAdmin.model'
 import { cloneDeep } from 'lodash'
 
-const getFullOrder = async (data) => {
+const getFullOrder = async (data, role) => {
     try {
-        const order = await orderAdminModel.getFullOrder(data)
+        const order = await orderAdminModel.getFullOrder(data, role)
         const transformOrder = cloneDeep(order)
         return transformOrder
     } catch (error) {

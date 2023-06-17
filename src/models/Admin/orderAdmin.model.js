@@ -49,9 +49,8 @@ const updateOrder = async (id, data, role) => {
             updateBy: { name: role.username, role: role.role }
         }
         const { _id, ...newUpdateData } = updateData
-        // console.log(newUpdateData)
         const updateOrder = await getDB().collection(orderName).findOneAndUpdate(
-            { _id: ObjectId(id) },
+            { orderId: id },
             { $set: newUpdateData },
             { returnDocument: 'after' }
         )
@@ -59,7 +58,8 @@ const updateOrder = async (id, data, role) => {
             { 'orders.orderId': newUpdateData.orderId },
             { $set: { 'orders.$.status': newUpdateData.status } },
             { returnDocument: 'after' }
-        );
+        )
+
         return updateOrder.value
     } catch (error) {
         throw new Error(error)
@@ -67,13 +67,13 @@ const updateOrder = async (id, data, role) => {
 }
 
 
-const getFullOrder = async (data) => {
+const getFullOrder = async (data, role) => {
     try {
         let perPage = 10
         let page = parseInt(data.count)
         const result = await getDB().collection(orderName).find().limit(perPage).skip((perPage * page) - perPage).toArray()
         const resultTotal = await getDB().collection(orderName).find().toArray()
-        return { data: [...result], total: resultTotal.length }
+        return { data: [...result], total: resultTotal.length, role: role.role }
     } catch (error) {
         throw new Error(error)
     }
@@ -102,25 +102,55 @@ const getSearchOrder = async (data) => {
         const result = await getDB().collection(orderName).aggregate([
             {
                 $match: {
-                    status: { $regex: new RegExp(`${data.status === 'Chọn trạng thái' ? '' : data.status}`) },
-                    'shipping_process': {
-                        $elemMatch: {
-                            date: {
-                                $gte: data.firstDate,
-                                $lte: data.endDate
-                            },
-                            content: 'Ordered'
-                        }
-                    },
-                    orderId: { $regex: new RegExp(`${data.orderId}`) },
+                    status: { $regex: new RegExp(`${data.status}`) },
+                    orderId: { $regex: new RegExp(`${data.orderId.toLowerCase()}`) },
                     _destroy: false
                 }
+            },
+            {
+                $addFields: {
+                    orderedShippingProcess: {
+                        $filter: {
+                            input: '$shipping_process',
+                            cond: {
+                                $and: [
+                                    { $eq: ['$$this.content', 'Ordered'] },
+                                    {
+                                        $and: [
+                                            { $gte: ['$$this.date', data.firstDate] },
+                                            { $lte: ['$$this.date', data.endDate] }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $match: {
+                    orderedShippingProcess: { $ne: [] }
+                }
+            },
+            {
+                $addFields: {
+                    lastProcess: { $arrayElemAt: ['$orderedShippingProcess', -1] },
+                    dateCount: { $toDate: { $arrayElemAt: ['$orderedShippingProcess.date', -1] } }
+                }
+            },
+            {
+                $sort: {
+                    dateCount: data.sortDate === 'asc' ? 1 : -1,
+                    'lastProcess.date': data.sortDate === 'asc' ? 1 : -1,
+                    'lastProcess.time': data.sortDate === 'asc' ? 1 : -1
+                }
             }
-        ]).skip((perPage * page) - perPage).limit(perPage).toArray()
+        ]).skip((perPage * page) - perPage).limit(perPage).toArray();
+
         const resultTotal = await getDB().collection(orderName).aggregate([
             {
                 $match: {
-                    status: data.status,
+                    status: { $regex: new RegExp(`${data.status}`) },
                     'shipping_process': {
                         $elemMatch: {
                             date: {
@@ -130,7 +160,7 @@ const getSearchOrder = async (data) => {
                             content: 'Ordered'
                         }
                     },
-                    orderId: { $regex: new RegExp(`${data.orderId}`) },
+                    orderId: { $regex: new RegExp(`${data.orderId.toLowerCase()}`) },
                     _destroy: false
                 }
             }
@@ -152,7 +182,7 @@ const ratingOrder = async (id, data) => {
             data.product.map(async (item, index) => {
                 const updateProduct = await getDB().collection(item.collection).findOneAndUpdate(
                     { nameProduct: item.nameProduct },
-                    { $push : { rating: { star: item.star, content: item.content, username: data.username, email: data.email, img: data.image, date: data.date, time: data.time } } },
+                    { $push: { rating: { star: item.star, content: item.content, username: data.username, email: data.email, img: data.image, date: data.date, time: data.time } } },
                     { returnDocument: 'after' }
                 )
                 return updateProduct
