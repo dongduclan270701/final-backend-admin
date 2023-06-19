@@ -18,6 +18,7 @@ const laptopCollectionSchema = Joi.object({
     nowPrice: Joi.number().min(0).required(),
     description_table: Joi.array().required().items(Joi.array().ordered(Joi.string(), Joi.string())),
     description: Joi.array().required().items(Joi.array().ordered(Joi.string(), Joi.string())),
+    specifications: Joi.array().required().items(Joi.array().ordered(Joi.string(), Joi.string())),
     category: Joi.array().required().items(Joi.string()),
     collection: Joi.string().default(laptopCollectionName),
     rating: Joi.array().items(Joi.object()),
