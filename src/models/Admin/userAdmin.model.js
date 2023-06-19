@@ -44,7 +44,7 @@ const getSearchUser = async (data) => {
         const result = await getDB().collection(userCollectionName).aggregate([
             {
                 $match: {
-                    email: { $regex: new RegExp(`${data.email}`) },
+                    email: { $regex: new RegExp(data.email, 'i') },
                     status: status,
                     _destroy: false
                 }
@@ -61,7 +61,7 @@ const getSearchUser = async (data) => {
         const resultTotal = await getDB().collection(userCollectionName).aggregate([
             {
                 $match: {
-                    email: { $regex: new RegExp(`${data.email}`) },
+                    email: { $regex: new RegExp(data.email, 'i') },
                     status: status,
                     _destroy: false
                 }

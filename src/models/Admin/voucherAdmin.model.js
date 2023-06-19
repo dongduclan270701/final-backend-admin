@@ -145,7 +145,7 @@ const getSearchVoucher = async (data) => {
         const result = await getDB().collection(voucherName).aggregate([
             {
                 $match: {
-                    code: { $regex: new RegExp(`${data.code}`) },
+                    code: { $regex: new RegExp(data.code, 'i') },
                     status: status,
                     _destroy: false
                 }
@@ -154,7 +154,7 @@ const getSearchVoucher = async (data) => {
         const resultTotal = await getDB().collection(voucherName).aggregate([
             {
                 $match: {
-                    code: { $regex: new RegExp(`${data.code}`) },
+                    code: { $regex: new RegExp(data.code, 'i') },
                     status: status,
                     _destroy: false
                 }

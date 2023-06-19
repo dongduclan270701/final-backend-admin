@@ -167,7 +167,7 @@ const getSearchEmployee = async (data) => {
         const result = await getDB().collection(employeeCollectionName).aggregate([
             {
                 $match: {
-                    email: { $regex: new RegExp(`${data.email}`) },
+                    email: { $regex: new RegExp(data.email, 'i') },
                     role: { $regex: new RegExp(`${data.role}`) },
                     status: status,
                     _destroy: false
@@ -177,7 +177,7 @@ const getSearchEmployee = async (data) => {
         const resultTotal = await getDB().collection(employeeCollectionName).aggregate([
             {
                 $match: {
-                    email: { $regex: new RegExp(`${data.email}`) },
+                    email: { $regex: new RegExp(data.email, 'i') },
                     role: { $regex: new RegExp(`${data.role}`) },
                     status: status,
                     _destroy: false

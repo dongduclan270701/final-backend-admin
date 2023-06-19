@@ -117,7 +117,7 @@ const getSearchLaptopInformation = async (data) => {
         const result = await getDB().collection(laptopCollectionName).aggregate([
             {
                 $match: {
-                    nameProduct: { $regex: new RegExp(`${data.nameProduct}`) },
+                    nameProduct: { $regex: new RegExp(data.nameProduct, 'i') },
                     category: filteredCategory.length > 0 ? { $all: filteredCategory } : { $exists: true },
                     _destroy: false
                 }
@@ -126,7 +126,7 @@ const getSearchLaptopInformation = async (data) => {
         const resultTotal = await getDB().collection(laptopCollectionName).aggregate([
             {
                 $match: {
-                    nameProduct: { $regex: new RegExp(`${data.nameProduct}`) },
+                    nameProduct: { $regex: new RegExp(data.nameProduct, 'i') },
                     category: filteredCategory.length > 0 ? { $all: filteredCategory } : { $exists: true },
                     _destroy: false
                 }
