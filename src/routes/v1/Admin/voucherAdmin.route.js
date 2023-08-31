@@ -18,6 +18,8 @@ const authAdmin = (req, res, next) => {
             next()
         } else if (verified.role === 'MANAGEMENT') {
             next()
+        } else if (verified.role === 'SALES') {
+            next()
         } else {
             return res.status(401).json({ message: 'You do not have sufficient permissions to perform this function' })
         }

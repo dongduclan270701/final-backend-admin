@@ -25,7 +25,7 @@ const getFullUser = async (data, role) => {
         let page = parseInt(data.count)
         const result = await getDB().collection(userCollectionName).find({}).skip((perPage * page) - perPage).limit(perPage).toArray()
         const resultTotal = await getDB().collection(userCollectionName).find({}).toArray()
-        return { data: [...result], total: resultTotal.length, role: role.role }
+        return { data: [...result], total: resultTotal.length, chartData: resultTotal, role: role.role }
     } catch (error) {
         throw new Error(error)
     }

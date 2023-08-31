@@ -44,7 +44,7 @@ const loginEmployee = async (req, res) => {
                     },
                     process.env.TOKEN_SECRET_ADMIN
                 )
-                res.status(HttpStatusCode.OK).json({ token: token })
+                res.status(HttpStatusCode.OK).json({ token: token, role: result.role })
             }
         }
     } catch (error) {

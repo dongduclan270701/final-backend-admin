@@ -73,7 +73,7 @@ const getFullOrder = async (data, role) => {
         let page = parseInt(data.count)
         const result = await getDB().collection(orderName).find().limit(perPage).skip((perPage * page) - perPage).toArray()
         const resultTotal = await getDB().collection(orderName).find().toArray()
-        return { data: [...result], total: resultTotal.length, role: role.role }
+        return { data: [...result], total: resultTotal.length, role: role.role, chartData: resultTotal }
     } catch (error) {
         throw new Error(error)
     }
