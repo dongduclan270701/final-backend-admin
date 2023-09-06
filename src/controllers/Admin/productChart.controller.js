@@ -1,34 +1,9 @@
-import { laptopCollectingService } from '*/services/Admin/laptopCollecting.service'
+import { productChartService } from '*/services/Admin/productChart.service'
 import { HttpStatusCode } from '*/utils/constants'
-
-const createNew = async (req, res) => {
-    try {
-        const data = req.body
-        const result = await laptopCollectingService.createNew(data)
-        res.status(HttpStatusCode.OK).json(result)
-    } catch (error) {
-        res.status(HttpStatusCode.INTERNAL_SERVER).json({
-            error: error.message
-        })
-    }
-}
-
-const getFullLaptopCollecting = async (req, res) => {
-    try {
-        const data = req.query
-        const result = await laptopCollectingService.getFullLaptopCollecting(data, req.result)
-        
-        res.status(HttpStatusCode.OK).json(result)
-    } catch (error) {
-        res.status(HttpStatusCode.INTERNAL_SERVER).json({
-            error: error.message
-        })
-    }
-}
 
 const getTotalGoods = async (req, res) => {
     try {
-        const result = await laptopCollectingService.getTotalGoods(req.result)
+        const result = await productChartService.getTotalGoods(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -39,7 +14,7 @@ const getTotalGoods = async (req, res) => {
 
 const getTotalOutOfStock = async (req, res) => {
     try {
-        const result = await laptopCollectingService.getTotalOutOfStock(req.result)
+        const result = await productChartService.getTotalOutOfStock(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -50,7 +25,7 @@ const getTotalOutOfStock = async (req, res) => {
 
 const getTotalSoldAndProfitOfMonth = async (req, res) => {
     try {
-        const result = await laptopCollectingService.getTotalSoldAndProfitOfMonth(req.result)
+        const result = await productChartService.getTotalSoldAndProfitOfMonth(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -61,7 +36,7 @@ const getTotalSoldAndProfitOfMonth = async (req, res) => {
 
 const getTotalViewInMonth = async (req, res) => {
     try {
-        const result = await laptopCollectingService.getTotalViewInMonth(req.result)
+        const result = await productChartService.getTotalViewInMonth(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -72,7 +47,7 @@ const getTotalViewInMonth = async (req, res) => {
 
 const getTotalSoldInYear = async (req, res) => {
     try {
-        const result = await laptopCollectingService.getTotalSoldInYear(req.result)
+        const result = await productChartService.getTotalSoldInYear(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -83,7 +58,7 @@ const getTotalSoldInYear = async (req, res) => {
 
 const getTotalViewInYear = async (req, res) => {
     try {
-        const result = await laptopCollectingService.getTotalViewInYear(req.result)
+        const result = await productChartService.getTotalViewInYear(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -94,7 +69,7 @@ const getTotalViewInYear = async (req, res) => {
 
 const getTotalSoldByDay = async (req, res) => {
     try {
-        const result = await laptopCollectingService.getTotalSoldByDay(req.result)
+        const result = await productChartService.getTotalSoldByDay(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -105,7 +80,7 @@ const getTotalSoldByDay = async (req, res) => {
 
 const getTotalViewByDay = async (req, res) => {
     try {
-        const result = await laptopCollectingService.getTotalViewByDay(req.result)
+        const result = await productChartService.getTotalViewByDay(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -116,7 +91,7 @@ const getTotalViewByDay = async (req, res) => {
 
 const getTotalAInStock = async (req, res) => {
     try {
-        const result = await laptopCollectingService.getTotalAInStock(req.result)
+        const result = await productChartService.getTotalAInStock(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -128,7 +103,7 @@ const getTotalAInStock = async (req, res) => {
 const getCountGoodsByCategory = async (req, res) => {
     try {
         const data = req.query
-        const result = await laptopCollectingService.getCountGoodsByCategory(data, req.result)
+        const result = await productChartService.getCountGoodsByCategory(data, req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -139,7 +114,7 @@ const getCountGoodsByCategory = async (req, res) => {
 
 const getTopSoldProducts = async (req, res) => {
     try {
-        const result = await laptopCollectingService.getTopSoldProducts(req.result)
+        const result = await productChartService.getTopSoldProducts(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -150,7 +125,7 @@ const getTopSoldProducts = async (req, res) => {
 
 const getTopViewProducts = async (req, res) => {
     try {
-        const result = await laptopCollectingService.getTopViewProducts(req.result)
+        const result = await productChartService.getTopViewProducts(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -162,7 +137,7 @@ const getTopViewProducts = async (req, res) => {
 const getSoldProductsByCategory = async (req, res) => {
     try {
         const data = req.query
-        const result = await laptopCollectingService.getSoldProductsByCategory(data, req.result)
+        const result = await productChartService.getSoldProductsByCategory(data, req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -171,48 +146,7 @@ const getSoldProductsByCategory = async (req, res) => {
     }
 }
 
-const getFullLaptopInformationAdmin = async (req, res) => {
-    try {
-        const { id } = req.params
-        const result = await laptopCollectingService.getFullLaptopInformationAdmin(id)
-        res.status(HttpStatusCode.OK).json(result)
-    } catch (error) {
-        res.status(HttpStatusCode.INTERNAL_SERVER).json({
-            error: error.message
-        })
-    }
-}
-
-const getSearchLaptopInformation = async (req, res) => {
-    try {
-        const data = req.query
-        const result = await laptopCollectingService.getSearchLaptopInformation(data)
-        res.status(HttpStatusCode.OK).json(result)
-    } catch (error) {
-        res.status(HttpStatusCode.INTERNAL_SERVER).json({
-            error: error.message
-        })
-    }
-}
-
-const update = async (req, res) => {
-    try {
-        const { src } = req.params
-        const result = await laptopCollectingService.update(src, req.body)
-        res.status(HttpStatusCode.OK).json(result)
-    } catch (error) {
-        res.status(HttpStatusCode.INTERNAL_SERVER).json({
-            error: error.message
-        })
-    }
-}
-
-export const laptopCollectingController = { 
-    createNew, 
-    getSearchLaptopInformation, 
-    getFullLaptopInformationAdmin, 
-    getFullLaptopCollecting, 
-    update,
+export const productChartController = { 
     getTotalGoods,
     getTotalOutOfStock,
     getTotalAInStock,
