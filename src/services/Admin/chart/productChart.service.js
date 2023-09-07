@@ -1,4 +1,4 @@
-import { productChartModel } from '*/models/Admin/productChart.model'
+import { productChartModel } from '*/models/Admin/chart/productChart.model'
 import { cloneDeep } from 'lodash'
 
 const getTotalGoods = async (role) => {

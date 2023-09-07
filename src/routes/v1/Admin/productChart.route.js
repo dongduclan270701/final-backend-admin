@@ -1,5 +1,5 @@
 import express from 'express'
-import { productChartController } from '*/controllers/Admin/productChart.controller'
+import { productChartController } from '*/controllers/Admin/chart/productChart.controller'
 import jwt from 'jsonwebtoken'
 import { HttpStatusCode } from '*/utils/constants'
 

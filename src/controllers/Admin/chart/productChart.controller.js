@@ -1,4 +1,4 @@
-import { productChartService } from '*/services/Admin/productChart.service'
+import { productChartService } from '*/services/Admin/chart/productChart.service'
 import { HttpStatusCode } from '*/utils/constants'
 
 const getTotalGoods = async (req, res) => {

@@ -8,7 +8,7 @@ const createNewEmployee = async (req, res, next) => {
         email: Joi.string().required(),
         role: Joi.string().required(),
         phoneNumber: Joi.number().required(),
-        dateOfBirth: Joi.string().required()
+        age: Joi.number().required()
     })
     try {
         await condition.validateAsync(req.body, { abortEarly: false })
