@@ -31,8 +31,74 @@ const getTotalAgeEmployee = async (role) => {
     }
 }
 
+const getTotalRole = async (role) => {
+    try {
+        const employeeChart = await employeeChartModel.getTotalRole(role)
+        const transformEmployeeChart = cloneDeep(employeeChart)
+        return transformEmployeeChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getTotalSoldInMonth = async (role) => {
+    try {
+        const employeeChart = await employeeChartModel.getTotalSoldInMonth(role)
+        const transformEmployeeChart = cloneDeep(employeeChart)
+        return transformEmployeeChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getTotalChartSoldInMonth = async (role) => {
+    try {
+        const employeeChart = await employeeChartModel.getTotalChartSoldInMonth(role)
+        const transformEmployeeChart = cloneDeep(employeeChart)
+        return transformEmployeeChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getTopEmployeeHighestValue = async (role) => {
+    try {
+        const employeeChart = await employeeChartModel.getTopEmployeeHighestValue(role)
+        const transformEmployeeChart = cloneDeep(employeeChart)
+        return transformEmployeeChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getTotalOrderInMonth = async (role) => {
+    try {
+        const employeeChart = await employeeChartModel.getTotalOrderInMonth(role)
+        const transformEmployeeChart = cloneDeep(employeeChart)
+        return transformEmployeeChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getTotalChartOrderInMonth = async (role) => {
+    try {
+        const employeeChart = await employeeChartModel.getTotalChartOrderInMonth(role)
+        const transformEmployeeChart = cloneDeep(employeeChart)
+        return transformEmployeeChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 export const employeeChartService = { 
     getTotalEmployee,
     getTotalEmployeeWorking,
-    getTotalAgeEmployee
+    getTotalAgeEmployee,
+    getTotalRole,
+    getTotalSoldInMonth,
+    getTotalChartSoldInMonth,
+    getTopEmployeeHighestValue,
+    getTotalOrderInMonth,
+    getTotalChartOrderInMonth
 }

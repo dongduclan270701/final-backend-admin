@@ -38,4 +38,22 @@ router.route('/totalEmployeeWorking')
 router.route('/totalAgeEmployee')
     .get(authAdmin, employeeChartController.getTotalAgeEmployee)
 
+router.route('/totalRole')
+    .get(authAdmin, employeeChartController.getTotalRole)
+
+router.route('/totalSoldInMonth')
+    .get(authAdmin, employeeChartController.getTotalSoldInMonth)
+
+router.route('/totalChartSoldInMonth')
+    .get(authAdmin, employeeChartController.getTotalChartSoldInMonth)
+
+router.route('/totalChartOrderInMonth')
+    .get(authAdmin, employeeChartController.getTotalChartOrderInMonth)
+
+router.route('/totalOrderInMonth')
+    .get(authAdmin, employeeChartController.getTotalOrderInMonth)
+
+router.route('/topEmployeeHighestValue')
+    .get(authAdmin, employeeChartController.getTopEmployeeHighestValue)
+
 export const employeeChartRoutes = router

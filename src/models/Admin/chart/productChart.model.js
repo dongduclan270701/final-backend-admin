@@ -458,12 +458,12 @@ const getTopViewProducts = async (role) => {
             return {
                 topViewProducts: aggregationResult,
                 role: role.role
-            };
+            }
         } else {
-            return 0;
+            return 0
         }
     } catch (error) {
-        throw new Error(error);
+        throw new Error(error)
     }
 }
 

@@ -134,13 +134,230 @@ const getTotalAgeEmployee = async (role) => {
     } catch (error) {
         throw new Error(error)
     }
-};
+}
 
+const getTotalRole = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const result = await getDB().collection(collectionName).aggregate([
+                {
+                    $match: {
+                        role: { $in: ['CEO', 'SALES', 'PRODUCT', 'ORDER', 'MANAGEMENT'] },
+                        _destroy: false
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$role',
+                        total: { $sum: 1 }
+                    }
+                }
+            ]).toArray()
+            const totalCEO = result.find(item => item._id === 'CEO')?.total || 0
+            const totalSALES = result.find(item => item._id === 'SALES')?.total || 0
+            const totalPRODUCT = result.find(item => item._id === 'PRODUCT')?.total || 0
+            const totalORDER = result.find(item => item._id === 'ORDER')?.total || 0
+            const totalMANAGEMENT = result.find(item => item._id === 'MANAGEMENT')?.total || 0
+            return {
+                totalCEO,
+                totalSALES,
+                totalPRODUCT,
+                totalORDER,
+                totalMANAGEMENT
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 
+const getTotalSoldInMonth = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const [
+                resultTotal
+            ] = await Promise.all([
+                getDB().collection(collectionName).aggregate([
+                    {
+                        $match: {
+                            role: 'SALES',
+                            _destroy: false
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            totalSoldProductInMonth: {
+                                $sum: '$soldProductInMonth.soldProduct'
+                            },
+                            totalSoldProductInYear: {
+                                $sum: '$soldProductInYear.soldProduct'
+                            }
+                        }
+                    }
+                ]).toArray()
+            ])
+            return {
+                resultTotal
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 
+const getTotalOrderInMonth = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const [
+                resultTotal
+            ] = await Promise.all([
+                getDB().collection(collectionName).aggregate([
+                    {
+                        $match: {
+                            role: 'SALES',
+                            _destroy: false
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            totalOrderInMonth: {
+                                $sum: '$soldOrderInMonth.order'
+                            },
+                            totalOrderInYear: {
+                                $sum: '$soldOrderInYear.order'
+                            }
+                        }
+                    }
+                ]).toArray()
+            ])
+            return {
+                resultTotal
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 
+const getTotalChartSoldInMonth = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const [
+                resultTotal
+            ] = await Promise.all([
+                getDB().collection(collectionName).aggregate([
+                    {
+                        $match: {
+                            role: 'SALES',
+                            _destroy: false
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            soldProductInMonth: '$soldProductInMonth',
+                            target: '$kpiInMonth',
+                            salary: '$salary'
+                        }
+                    }
+                ]).toArray()
+            ])
+            return {
+                resultTotal
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const getTotalChartOrderInMonth = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const [
+                resultTotal
+            ] = await Promise.all([
+                getDB().collection(collectionName).aggregate([
+                    {
+                        $match: {
+                            role: 'SALES',
+                            _destroy: false
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            soldOrderInMonth: '$soldOrderInMonth'
+                        }
+                    }
+                ]).toArray()
+            ])
+            return {
+                resultTotal
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const getTopEmployeeHighestValue = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const limit = 10
+            const aggregationResult = await getDB().collection(collectionName).aggregate([
+                {
+                    $match: {
+                        role: 'SALES',
+                        _destroy: false
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        username: 1,
+                        role: 1,
+                        status: 1,
+                        totalProduct: { $sum: '$soldProductInMonth.soldProduct' },
+                        totalAmount: { $sum: '$soldProductInMonth.amount' }
+                    }
+                },
+                {
+                    $sort: { totalAmount: -1 }
+                },
+                {
+                    $limit: limit
+                }
+            ]).toArray()
+            return {
+                topEmployeeHighestValue: aggregationResult,
+                role: role.role
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 export const employeeChartModel = {
     getTotalEmployee,
     getTotalEmployeeWorking,
-    getTotalAgeEmployee
+    getTotalAgeEmployee,
+    getTotalRole,
+    getTotalSoldInMonth,
+    getTotalChartSoldInMonth,
+    getTopEmployeeHighestValue,
+    getTotalOrderInMonth,
+    getTotalChartOrderInMonth
 }

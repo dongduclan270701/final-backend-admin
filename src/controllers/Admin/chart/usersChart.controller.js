@@ -1,9 +1,9 @@
-import { employeeChartService } from '*/services/Admin/chart/employeeChart.service'
+import { usersChartService } from '*/services/Admin/chart/usersChart.service'
 import { HttpStatusCode } from '*/utils/constants'
 
-const getTotalEmployee = async (req, res) => {
+const getTotalUsers = async (req, res) => {
     try {
-        const result = await employeeChartService.getTotalEmployee(req.result)
+        const result = await usersChartService.getTotalUsers(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -12,9 +12,9 @@ const getTotalEmployee = async (req, res) => {
     }
 }
 
-const getTotalEmployeeWorking = async (req, res) => {
+const getTotalUserLoginLastMonth = async (req, res) => {
     try {
-        const result = await employeeChartService.getTotalEmployeeWorking(req.result)
+        const result = await usersChartService.getTotalUserLoginLastMonth(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -23,9 +23,9 @@ const getTotalEmployeeWorking = async (req, res) => {
     }
 }
 
-const getTotalAgeEmployee = async (req, res) => {
+const getTotalUserLoginOverMonth = async (req, res) => {
     try {
-        const result = await employeeChartService.getTotalAgeEmployee(req.result)
+        const result = await usersChartService.getTotalUserLoginOverMonth(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -34,9 +34,9 @@ const getTotalAgeEmployee = async (req, res) => {
     }
 }
 
-const getTotalRole = async (req, res) => {
+const getTotalUserAddGoodsToWishlist = async (req, res) => {
     try {
-        const result = await employeeChartService.getTotalRole(req.result)
+        const result = await usersChartService.getTotalUserAddGoodsToWishlist(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -45,9 +45,9 @@ const getTotalRole = async (req, res) => {
     }
 }
 
-const getTotalSoldInMonth = async (req, res) => {
+const getTotalUserPurchased = async (req, res) => {
     try {
-        const result = await employeeChartService.getTotalSoldInMonth(req.result)
+        const result = await usersChartService.getTotalUserPurchased(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -56,9 +56,9 @@ const getTotalSoldInMonth = async (req, res) => {
     }
 }
 
-const getTotalChartSoldInMonth = async (req, res) => {
+const getTotalUserJoinInMonth = async (req, res) => {
     try {
-        const result = await employeeChartService.getTotalChartSoldInMonth(req.result)
+        const result = await usersChartService.getTotalUserJoinInMonth(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -67,9 +67,9 @@ const getTotalChartSoldInMonth = async (req, res) => {
     }
 }
 
-const getTopEmployeeHighestValue = async (req, res) => {
+const getTotalAgeUser = async (req, res) => {
     try {
-        const result = await employeeChartService.getTopEmployeeHighestValue(req.result)
+        const result = await usersChartService.getTotalAgeUser(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -78,9 +78,9 @@ const getTopEmployeeHighestValue = async (req, res) => {
     }
 }
 
-const getTotalOrderInMonth = async (req, res) => {
+const getTotalStatusUser = async (req, res) => {
     try {
-        const result = await employeeChartService.getTotalOrderInMonth(req.result)
+        const result = await usersChartService.getTotalStatusUser(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -89,9 +89,9 @@ const getTotalOrderInMonth = async (req, res) => {
     }
 }
 
-const getTotalChartOrderInMonth = async (req, res) => {
+const getTopUserHighestValue = async (req, res) => {
     try {
-        const result = await employeeChartService.getTotalChartOrderInMonth(req.result)
+        const result = await usersChartService.getTopUserHighestValue(req.result)
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -100,14 +100,14 @@ const getTotalChartOrderInMonth = async (req, res) => {
     }
 }
 
-export const employeeChartController = { 
-    getTotalEmployee,
-    getTotalEmployeeWorking,
-    getTotalAgeEmployee,
-    getTotalRole,
-    getTotalSoldInMonth,
-    getTotalChartSoldInMonth,
-    getTopEmployeeHighestValue,
-    getTotalOrderInMonth,
-    getTotalChartOrderInMonth
+export const usersChartController = { 
+    getTotalUsers,
+    getTotalUserLoginLastMonth,
+    getTotalUserLoginOverMonth,
+    getTotalUserAddGoodsToWishlist,
+    getTotalUserPurchased,
+    getTotalUserJoinInMonth,
+    getTotalAgeUser,
+    getTotalStatusUser,
+    getTopUserHighestValue
 }

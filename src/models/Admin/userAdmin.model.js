@@ -9,7 +9,9 @@ const updateStatusUser = async (id, data) => {
     try {
         const updateUser = await getDB().collection(userCollectionName).findOneAndUpdate(
             { _id: ObjectId(id) },
-            { $set: { status: data.status } },
+            { $set: { 
+                status: data.status
+            } },
             { returnDocument: 'after' }
         )
         return updateUser.value

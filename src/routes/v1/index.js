@@ -8,6 +8,7 @@ import { voucherAdminRoutes } from './Admin/voucherAdmin.route'
 import { collectingAdminRoutes } from './Admin/collectingAdmin.route'
 import { productChartRoutes } from './Admin/productChart.route'
 import { employeeChartRoutes } from './Admin/employeeChart.route'
+import { usersChartRoutes } from './Admin/usersChart.route'
 const router = express.Router()
 
 // GET v1/status
@@ -31,5 +32,7 @@ router.use('/collecting', collectingAdminRoutes)
 router.use('/productChart', productChartRoutes)
 
 router.use('/employeeChart', employeeChartRoutes)
+
+router.use('/usersChart', usersChartRoutes)
 
 export const apiV1 = router

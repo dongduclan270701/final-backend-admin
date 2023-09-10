@@ -19,7 +19,7 @@ const employeeCollectionSchema = Joi.object({
     createdBy: Joi.object().default({}),
     updatedAt: Joi.date().timestamp().default(null),
     updatedBy: Joi.array().items(Joi.object()).default([]),
-    kpiInMonth: Joi.array().items(Joi.object()).default([]),
+    kpiInMonth: Joi.number().default(0),
     soldProductInMonth: Joi.array().items(Joi.object()).default([]),
     soldProductInYear: Joi.array().items(Joi.object()).default([]),
     soldOrderInMonth: Joi.array().items(Joi.object()).default([]),
@@ -31,7 +31,18 @@ const employeeCollectionSchema = Joi.object({
     status: Joi.boolean().default(true),
     _destroy: Joi.boolean().default(false)
 })
-
+// const soldProductInMonth = [
+//     { day: '01', month: '06', soldProduct: 1, amount: 20000 }
+// ]
+// const soldOrderInMonth = [
+//     { day: '01', month: '06', order: 1, amount: 20000 }
+// ]
+// const workInMonth = [
+//     { day: '01', month: '06', status: true }
+// ]
+// const salaryInMonth = [
+//     { day: '01', month: '06', salary: '(workInMonth -> true) * soldOrderInMonth' }
+// ]
 const validateSchema = async (data) => {
     return await employeeCollectionSchema.validateAsync(data, { abortEarly: false }) // Hiển thị đầy đủ lỗi nếu trong trường data có 2 field trở lên bị lỗi
 }
