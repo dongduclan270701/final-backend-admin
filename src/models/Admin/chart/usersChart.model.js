@@ -175,37 +175,75 @@ const getTotalUserPurchased = async (role) => {
 
 const getTotalUserJoinInMonth = async (role) => {
     try {
+        // if (role.role === 'CEO') {
+        //     const currentDate = new Date()
+        //     currentDate.setDate(1)
+        //     const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
+        //     const [
+        //         resultTotalUser
+        //     ] = await Promise.all([
+        //         getDB().collection(collectionName).aggregate([
+        //             {
+        //                 $match: {
+        //                     'createdDate': {
+        //                         $gte: now.toString()
+        //                     }
+        //                 }
+        //             },
+        //             {
+        //                 $group: {
+        //                     _id: null,
+        //                     count: { $sum: 1 }
+        //                 }
+        //             },
+        //             {
+        //                 $project: {
+        //                     _id: 0,
+        //                     count: 1
+        //                 }
+        //             }
+        //         ]).toArray()
+        //     ])
+        //     return {
+        //         resultTotalUser: resultTotalUser[0] ? resultTotalUser[0].count : 0,
+        //         role: role.role
+        //     }
+        // } else {
+        //     return 0
+        // }
         if (role.role === 'CEO') {
             const currentDate = new Date()
-            currentDate.setDate(1)
-            const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
+            const currentMonth = currentDate.getMonth()
+            const currentYear = currentDate.getFullYear()
+            const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0)
+            const startDateString = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-01`
+            const endDateString = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${lastDayOfMonth.getDate().toString().padStart(2, '0')}`
             const [
                 resultTotalUser
             ] = await Promise.all([
                 getDB().collection(collectionName).aggregate([
                     {
                         $match: {
-                            'createdDate': {
-                                $gte: now.toString()
-                            }
+                            createdDate: {
+                                $gte: startDateString,
+                                $lte: endDateString
+                            },
+                            _destroy: false
                         }
                     },
                     {
                         $group: {
-                            _id: null,
-                            count: { $sum: 1 }
+                            _id: '$createdDate',
+                            countUser: { $sum: 1 }
                         }
                     },
                     {
-                        $project: {
-                            _id: 0,
-                            count: 1
-                        }
+                        $sort: { '_id': 1 }
                     }
                 ]).toArray()
             ])
             return {
-                resultTotalUser: resultTotalUser[0] ? resultTotalUser[0].count : 0,
+                resultTotalUser,
                 role: role.role
             }
         } else {
@@ -329,12 +367,12 @@ const getTopUserHighestValue = async (role) => {
                     },
                     {
                         $match: {
+                            'orders.status': { $in: ['Being transported', 'Payment information confirmed', 'Delivered to the carrier', 'Ordered', 'Delivery successful'] },
                             'orders.shipping_process.date': {
                                 $gte: now.toString()
                             }
                         }
                     },
-                
                     {
                         $sort: { 'orders.sumOrder': -1 }
                     },
