@@ -65,7 +65,7 @@ const getTotalAInStock = async (role) => {
                     {
                         $group: {
                             _id: null,
-                            totalImportCost: { $sum: '$importCost' }
+                            totalNowPrice: { $sum: '$nowPrice' }
                         }
                     }
                 ]).toArray(),
@@ -80,7 +80,7 @@ const getTotalAInStock = async (role) => {
             ])
             return {
                 totalInStock: resultTotalInStock.length,
-                totalAvailable: resultTotalGoodsAvailable[0].totalImportCost,
+                totalAvailable: resultTotalGoodsAvailable[0].totalNowPrice,
                 role: role.role
             }
         } else {
