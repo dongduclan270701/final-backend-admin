@@ -61,11 +61,22 @@ const getTotalOrdersByDay = async (role) => {
     }
 }
 
+const getTotalTopProduct = async (role) => {
+    try {
+        const orderChart = await orderChartModel.getTotalTopProduct(role)
+        const transformOrderChart = cloneDeep(orderChart)
+        return transformOrderChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 export const orderChartService = { 
     getTotalOrder,
     getTotalOrderSuccessful,
     getTotalOrderFailed,
     getTotalOrderByStatus,
     getTotalTopOrder,
-    getTotalOrdersByDay
+    getTotalOrdersByDay,
+    getTotalTopProduct
 }

@@ -44,6 +44,9 @@ router.route('/totalOrderByStatus')
 router.route('/totalTopOrder')
     .get(authAdmin, orderChartController.getTotalTopOrder)
 
+router.route('/totalTopProduct')
+    .get(authAdmin, orderChartController.getTotalTopProduct)
+
 router.route('/totalOrdersByDay')
     .get(authAdmin, orderChartController.getTotalOrdersByDay)
 

@@ -100,6 +100,39 @@ const getTopUserHighestValue = async (req, res) => {
     }
 }
 
+const getTopUserHighestValueAll = async (req, res) => {
+    try {
+        const result = await usersChartService.getTopUserHighestValueAll(req.result)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            error: error.message
+        })
+    }
+}
+
+const getTopUserHighestOrderAll = async (req, res) => {
+    try {
+        const result = await usersChartService.getTopUserHighestOrderAll(req.result)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            error: error.message
+        })
+    }
+}
+
+const getTopUserHighestOrder = async (req, res) => {
+    try {
+        const result = await usersChartService.getTopUserHighestOrder(req.result)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            error: error.message
+        })
+    }
+}
+
 export const usersChartController = { 
     getTotalUsers,
     getTotalUserLoginLastMonth,
@@ -109,5 +142,8 @@ export const usersChartController = {
     getTotalUserJoinInMonth,
     getTotalAgeUser,
     getTotalStatusUser,
-    getTopUserHighestValue
+    getTopUserHighestValue,
+    getTopUserHighestValueAll,
+    getTopUserHighestOrderAll,
+    getTopUserHighestOrder
 }

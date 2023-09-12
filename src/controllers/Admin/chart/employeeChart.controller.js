@@ -100,6 +100,39 @@ const getTotalChartOrderInMonth = async (req, res) => {
     }
 }
 
+const getTopEmployeeHighestValueInYear = async (req, res) => {
+    try {
+        const result = await employeeChartService.getTopEmployeeHighestValueInYear(req.result)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            error: error.message
+        })
+    }
+}
+
+const getTopEmployeeHighestOrderInYear = async (req, res) => {
+    try {
+        const result = await employeeChartService.getTopEmployeeHighestOrderInYear(req.result)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            error: error.message
+        })
+    }
+}
+
+const getTopEmployeeHighestOrder = async (req, res) => {
+    try {
+        const result = await employeeChartService.getTopEmployeeHighestOrder(req.result)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            error: error.message
+        })
+    }
+}
+
 export const employeeChartController = { 
     getTotalEmployee,
     getTotalEmployeeWorking,
@@ -109,5 +142,8 @@ export const employeeChartController = {
     getTotalChartSoldInMonth,
     getTopEmployeeHighestValue,
     getTotalOrderInMonth,
-    getTotalChartOrderInMonth
+    getTotalChartOrderInMonth,
+    getTopEmployeeHighestValueInYear,
+    getTopEmployeeHighestOrderInYear,
+    getTopEmployeeHighestOrder
 }

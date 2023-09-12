@@ -56,4 +56,13 @@ router.route('/totalStatusUser')
 router.route('/topUserHighestValue')
     .get(authAdmin, usersChartController.getTopUserHighestValue)
 
+router.route('/topUserHighestOrder')
+    .get(authAdmin, usersChartController.getTopUserHighestOrder)
+
+router.route('/topUserHighestValueAll')
+    .get(authAdmin, usersChartController.getTopUserHighestValueAll)
+
+router.route('/topUserHighestOrderAll')
+    .get(authAdmin, usersChartController.getTopUserHighestOrderAll)
+
 export const usersChartRoutes = router

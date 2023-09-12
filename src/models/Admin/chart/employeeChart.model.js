@@ -328,8 +328,89 @@ const getTopEmployeeHighestValue = async (role) => {
                         username: 1,
                         role: 1,
                         status: 1,
+                        image:1,
                         totalProduct: { $sum: '$soldProductInMonth.soldProduct' },
                         totalAmount: { $sum: '$soldProductInMonth.amount' }
+                    }
+                },
+                {
+                    $sort: { totalProduct: -1 }
+                },
+                {
+                    $limit: limit
+                }
+            ]).toArray()
+            return {
+                topEmployeeHighestValue: aggregationResult,
+                role: role.role
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const getTopEmployeeHighestOrder = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const limit = 10
+            const aggregationResult = await getDB().collection(collectionName).aggregate([
+                {
+                    $match: {
+                        role: 'SALES',
+                        _destroy: false
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        username: 1,
+                        role: 1,
+                        status: 1,
+                        image:1,
+                        totalOrder: { $sum: '$soldOrderInMonth.order' },
+                        totalAmount: { $sum: '$soldOrderInMonth.amount' }
+                    }
+                },
+                {
+                    $sort: { totalOrder: -1 }
+                },
+                {
+                    $limit: limit
+                }
+            ]).toArray()
+            return {
+                topEmployeeHighestOrder: aggregationResult,
+                role: role.role
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const getTopEmployeeHighestValueInYear = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const limit = 10
+            const aggregationResult = await getDB().collection(collectionName).aggregate([
+                {
+                    $match: {
+                        role: 'SALES',
+                        _destroy: false
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        username: 1,
+                        role: 1,
+                        status: 1,
+                        image:1,
+                        totalProduct: { $sum: '$soldProductInYear.soldProduct' },
+                        totalAmount: { $sum: '$soldProductInYear.amount' }
                     }
                 },
                 {
@@ -350,6 +431,46 @@ const getTopEmployeeHighestValue = async (role) => {
         throw new Error(error)
     }
 }
+const getTopEmployeeHighestOrderInYear = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const limit = 10
+            const aggregationResult = await getDB().collection(collectionName).aggregate([
+                {
+                    $match: {
+                        role: 'SALES',
+                        _destroy: false
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        username: 1,
+                        role: 1,
+                        status: 1,
+                        image:1,
+                        totalOrder: { $sum: '$soldOrderInYear.order' },
+                        totalAmount: { $sum: '$soldOrderInYear.amount' }
+                    }
+                },
+                {
+                    $sort: { totalOrder: -1 }
+                },
+                {
+                    $limit: limit
+                }
+            ]).toArray()
+            return {
+                topEmployeeHighestOrder: aggregationResult,
+                role: role.role
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 export const employeeChartModel = {
     getTotalEmployee,
     getTotalEmployeeWorking,
@@ -359,5 +480,8 @@ export const employeeChartModel = {
     getTotalChartSoldInMonth,
     getTopEmployeeHighestValue,
     getTotalOrderInMonth,
-    getTotalChartOrderInMonth
+    getTotalChartOrderInMonth,
+    getTopEmployeeHighestValueInYear,
+    getTopEmployeeHighestOrderInYear,
+    getTopEmployeeHighestOrder
 }

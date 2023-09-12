@@ -164,7 +164,7 @@ const getTotalTopOrder = async (role) => {
             const resultTotalOrder = await getDB().collection(collectionName).aggregate([
                 {
                     $match: {
-                        // status: { $in: ['Ordered', 'Being transported', 'Payment information confirmed', 'Delivered to the carrier', 'Delivery successful'] },
+                        // status: { $in: ['Being transported', 'Payment information confirmed', 'Delivered to the carrier', 'Delivery successful'] },
                         status: { $in: ['Delivery successful'] },
                         createDate: {
                             $gte: now.toString()
@@ -172,7 +172,6 @@ const getTotalTopOrder = async (role) => {
                         _destroy: false
                     }
                 },
-
                 {
                     $group: {
                         _id: '$_id',
@@ -182,9 +181,9 @@ const getTotalTopOrder = async (role) => {
                 {
                     $sort: { 'sumOrder': -1 }
                 },
-                {
-                    $replaceRoot: { newRoot: '$order' }
-                },
+                // {
+                //     $replaceRoot: { newRoot: '$order' }
+                // },
                 {
                     $limit: 10
                 }
@@ -200,7 +199,45 @@ const getTotalTopOrder = async (role) => {
         throw new Error(error)
     }
 }
-
+const getTotalTopProduct = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const currentDate = new Date()
+            currentDate.setDate(1)
+            const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
+            const resultTopProduct = await getDB().collection(collectionName).aggregate([
+                {
+                    $match: {
+                        status: { $in: ['Delivery successful'] },
+                        createDate: {
+                            $gte: now.toString()
+                        },
+                        _destroy: false
+                    }
+                },
+                {
+                    $addFields: {
+                        productCount: { $size: '$product' }
+                    }
+                },
+                {
+                    $sort: { productCount: -1 }
+                },
+                {
+                    $limit: 10
+                }
+            ]).toArray()
+            return {
+                resultTopProduct,
+                role: role.role
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 const getTotalOrdersByDay = async (role) => {
     try {
         if (role.role === 'CEO') {
@@ -288,5 +325,6 @@ export const orderChartModel = {
     getTotalOrderFailed,
     getTotalOrderByStatus,
     getTotalTopOrder,
-    getTotalOrdersByDay
+    getTotalOrdersByDay,
+    getTotalTopProduct
 }

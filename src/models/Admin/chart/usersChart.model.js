@@ -402,6 +402,126 @@ const getTopUserHighestValue = async (role) => {
     }
 }
 
+const getTopUserHighestOrder = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const currentDate = new Date()
+            currentDate.setDate(1)
+            const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
+            const resultTopUser = await getDB().collection('users').aggregate([
+                {
+                    $match: {
+                        'orders.status': { $in: ['Being transported', 'Payment information confirmed', 'Delivered to the carrier', 'Ordered', 'Delivery successful'] },
+                        'orders.shipping_process': {
+                            $elemMatch: {
+                                date: { $gte: now.toString() }
+                            }
+                        },
+                        _destroy: false
+                    }
+                }
+            ]).toArray()
+            const filteredUsersData = resultTopUser.map((user) => ({
+                ...user,
+                orders: user.orders.filter((order) => {
+                    const orderDate = new Date(order.shipping_process[0].date)
+                    const comparisonDate = new Date(now.toString())
+                    return orderDate >= comparisonDate
+                })
+            }))
+            return {
+                resultTopUser: filteredUsersData,
+                role: role.role
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const getTopUserHighestValueAll = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const [
+                resultTopUser
+            ] = await Promise.all([
+                getDB().collection('users').aggregate([
+                    {
+                        $match: {
+                            _destroy: false
+                        }
+                    },
+                    {
+                        $unwind: '$orders'
+                    },
+                    {
+                        $match: {
+                            'orders.status': { $in: ['Being transported', 'Payment information confirmed', 'Delivered to the carrier', 'Ordered', 'Delivery successful'] }
+                        }
+                    },
+                    {
+                        $sort: { 'orders.sumOrder': -1 }
+                    },
+                    {
+                        $group: {
+                            _id: '$_id',
+                            user: { $first: '$$ROOT' }
+                        }
+                    },
+                    {
+                        $replaceRoot: { newRoot: '$user' }
+                    },
+                    {
+                        $limit: 10
+                    }
+                ]).toArray()
+            ])
+            return {
+                resultTopUser,
+                role: role.role
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const getTopUserHighestOrderAll = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const resultTopUser = await getDB().collection('users').aggregate([
+                {
+                    $match: {
+                        _destroy: false
+                    }
+                },
+                {
+                    $addFields: {
+                        ordersCount: { $size: '$orders' },
+                        totalSumOrder: { $sum: '$orders.sumOrder' }
+                    }
+                },
+                {
+                    $sort: { ordersCount: -1 }
+                },
+                {
+                    $limit: 10
+                }
+            ]).toArray()
+            return {
+                resultTopUser,
+                role: role.role
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 export const usersChartModel = {
     getTotalUsers,
     getTotalUserLoginLastMonth,
@@ -411,5 +531,8 @@ export const usersChartModel = {
     getTotalUserJoinInMonth,
     getTotalAgeUser,
     getTotalStatusUser,
-    getTopUserHighestValue
+    getTopUserHighestValue,
+    getTopUserHighestValueAll,
+    getTopUserHighestOrderAll,
+    getTopUserHighestOrder
 }

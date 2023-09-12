@@ -67,11 +67,23 @@ const getTotalOrdersByDay = async (req, res) => {
     }
 }
 
+const getTotalTopProduct = async (req, res) => {
+    try {
+        const result = await orderChartService.getTotalTopProduct(req.result)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            error: error.message
+        })
+    }
+}
+
 export const orderChartController = { 
     getTotalOrder,
     getTotalOrderSuccessful,
     getTotalOrderFailed,
     getTotalOrderByStatus,
     getTotalTopOrder,
-    getTotalOrdersByDay
+    getTotalOrdersByDay,
+    getTotalTopProduct
 }

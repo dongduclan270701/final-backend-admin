@@ -91,6 +91,36 @@ const getTotalChartOrderInMonth = async (role) => {
     }
 }
 
+const getTopEmployeeHighestValueInYear = async (role) => {
+    try {
+        const employeeChart = await employeeChartModel.getTopEmployeeHighestValueInYear(role)
+        const transformEmployeeChart = cloneDeep(employeeChart)
+        return transformEmployeeChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getTopEmployeeHighestOrderInYear = async (role) => {
+    try {
+        const employeeChart = await employeeChartModel.getTopEmployeeHighestOrderInYear(role)
+        const transformEmployeeChart = cloneDeep(employeeChart)
+        return transformEmployeeChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getTopEmployeeHighestOrder = async (role) => {
+    try {
+        const employeeChart = await employeeChartModel.getTopEmployeeHighestOrder(role)
+        const transformEmployeeChart = cloneDeep(employeeChart)
+        return transformEmployeeChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 export const employeeChartService = { 
     getTotalEmployee,
     getTotalEmployeeWorking,
@@ -100,5 +130,8 @@ export const employeeChartService = {
     getTotalChartSoldInMonth,
     getTopEmployeeHighestValue,
     getTotalOrderInMonth,
-    getTotalChartOrderInMonth
+    getTotalChartOrderInMonth,
+    getTopEmployeeHighestValueInYear,
+    getTopEmployeeHighestOrderInYear,
+    getTopEmployeeHighestOrder
 }

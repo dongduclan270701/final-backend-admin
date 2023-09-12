@@ -56,4 +56,13 @@ router.route('/totalOrderInMonth')
 router.route('/topEmployeeHighestValue')
     .get(authAdmin, employeeChartController.getTopEmployeeHighestValue)
 
+router.route('/topEmployeeHighestOrder')
+    .get(authAdmin, employeeChartController.getTopEmployeeHighestOrder)
+
+router.route('/topEmployeeHighestValueInYear')
+    .get(authAdmin, employeeChartController.getTopEmployeeHighestValueInYear)
+
+router.route('/topEmployeeHighestOrderInYear')
+    .get(authAdmin, employeeChartController.getTopEmployeeHighestOrderInYear)
+
 export const employeeChartRoutes = router

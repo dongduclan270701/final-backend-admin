@@ -91,6 +91,36 @@ const getTopUserHighestValue = async (role) => {
     }
 }
 
+const getTopUserHighestValueAll = async (role) => {
+    try {
+        const usersChart = await usersChartModel.getTopUserHighestValueAll(role)
+        const transformUsersChart = cloneDeep(usersChart)
+        return transformUsersChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getTopUserHighestOrderAll = async (role) => {
+    try {
+        const usersChart = await usersChartModel.getTopUserHighestOrderAll(role)
+        const transformUsersChart = cloneDeep(usersChart)
+        return transformUsersChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getTopUserHighestOrder = async (role) => {
+    try {
+        const usersChart = await usersChartModel.getTopUserHighestOrder(role)
+        const transformUsersChart = cloneDeep(usersChart)
+        return transformUsersChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 export const usersChartService = { 
     getTotalUsers,
     getTotalUserLoginLastMonth,
@@ -100,5 +130,8 @@ export const usersChartService = {
     getTotalUserJoinInMonth,
     getTotalAgeUser,
     getTotalStatusUser,
-    getTopUserHighestValue
+    getTopUserHighestValue,
+    getTopUserHighestValueAll,
+    getTopUserHighestOrderAll,
+    getTopUserHighestOrder
 }
