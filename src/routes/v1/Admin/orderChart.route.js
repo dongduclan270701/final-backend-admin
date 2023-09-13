@@ -47,6 +47,12 @@ router.route('/totalTopOrder')
 router.route('/totalTopProduct')
     .get(authAdmin, orderChartController.getTotalTopProduct)
 
+router.route('/totalTopOrderAll')
+    .get(authAdmin, orderChartController.getTotalTopOrderAll)
+
+router.route('/totalTopProductAll')
+    .get(authAdmin, orderChartController.getTotalTopProductAll)
+
 router.route('/totalOrdersByDay')
     .get(authAdmin, orderChartController.getTotalOrdersByDay)
 

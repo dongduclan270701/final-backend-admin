@@ -78,6 +78,27 @@ const getTotalTopProduct = async (req, res) => {
     }
 }
 
+const getTotalTopProductAll = async (req, res) => {
+    try {
+        const result = await orderChartService.getTotalTopProductAll(req.result)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            error: error.message
+        })
+    }
+}
+
+const getTotalTopOrderAll = async (req, res) => {
+    try {
+        const result = await orderChartService.getTotalTopOrderAll(req.result)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            error: error.message
+        })
+    }
+}
 export const orderChartController = { 
     getTotalOrder,
     getTotalOrderSuccessful,
@@ -85,5 +106,7 @@ export const orderChartController = {
     getTotalOrderByStatus,
     getTotalTopOrder,
     getTotalOrdersByDay,
-    getTotalTopProduct
+    getTotalTopProduct,
+    getTotalTopProductAll,
+    getTotalTopOrderAll
 }

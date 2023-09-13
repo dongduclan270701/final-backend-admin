@@ -238,6 +238,77 @@ const getTotalTopProduct = async (role) => {
         throw new Error(error)
     }
 }
+const getTotalTopOrderAll = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const resultTotalOrder = await getDB().collection(collectionName).aggregate([
+                {
+                    $match: {
+                        // status: { $in: ['Being transported', 'Payment information confirmed', 'Delivered to the carrier', 'Delivery successful'] },
+                        status: { $in: ['Delivery successful'] },
+                        _destroy: false
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        order: { $first: '$$ROOT' }
+                    }
+                },
+                {
+                    $sort: { 'sumOrder': -1 }
+                },
+                // {
+                //     $replaceRoot: { newRoot: '$order' }
+                // },
+                {
+                    $limit: 10
+                }
+            ]).toArray()
+            return {
+                resultTotalOrder,
+                role: role.role
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const getTotalTopProductAll = async (role) => {
+    try {
+        if (role.role === 'CEO') {
+            const resultTopProduct = await getDB().collection(collectionName).aggregate([
+                {
+                    $match: {
+                        status: { $in: ['Delivery successful'] },
+                        _destroy: false
+                    }
+                },
+                {
+                    $addFields: {
+                        productCount: { $size: '$product' }
+                    }
+                },
+                {
+                    $sort: { productCount: -1 }
+                },
+                {
+                    $limit: 10
+                }
+            ]).toArray()
+            return {
+                resultTopProduct,
+                role: role.role
+            }
+        } else {
+            return 0
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 const getTotalOrdersByDay = async (role) => {
     try {
         if (role.role === 'CEO') {
@@ -326,5 +397,7 @@ export const orderChartModel = {
     getTotalOrderByStatus,
     getTotalTopOrder,
     getTotalOrdersByDay,
-    getTotalTopProduct
+    getTotalTopProduct,
+    getTotalTopProductAll,
+    getTotalTopOrderAll
 }

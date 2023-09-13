@@ -71,6 +71,26 @@ const getTotalTopProduct = async (role) => {
     }
 }
 
+const getTotalTopOrderAll = async (role) => {
+    try {
+        const orderChart = await orderChartModel.getTotalTopOrderAll(role)
+        const transformOrderChart = cloneDeep(orderChart)
+        return transformOrderChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getTotalTopProductAll = async (role) => {
+    try {
+        const orderChart = await orderChartModel.getTotalTopProductAll(role)
+        const transformOrderChart = cloneDeep(orderChart)
+        return transformOrderChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 export const orderChartService = { 
     getTotalOrder,
     getTotalOrderSuccessful,
@@ -78,5 +98,7 @@ export const orderChartService = {
     getTotalOrderByStatus,
     getTotalTopOrder,
     getTotalOrdersByDay,
-    getTotalTopProduct
+    getTotalTopProduct,
+    getTotalTopOrderAll,
+    getTotalTopProductAll
 }
