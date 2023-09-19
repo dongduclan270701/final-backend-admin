@@ -39,7 +39,7 @@ const getTotalUserLoginLastMonth = async (role) => {
                             'lastLogin.time': { $exists: true },
                             'lastLogin.date': {
                                 $gte: lastMonth.toString(),
-                                $lt: now.toString()
+                                $lte: now.toString()
                             }
                         }
                     },
@@ -83,7 +83,7 @@ const getTotalUserLoginOverMonth = async (role) => {
                             status: true,
                             'lastLogin.time': { $exists: true },
                             'lastLogin.date': {
-                                $lt: lastMonth.toString()
+                                $lte: lastMonth.toString()
                             }
                         }
                     },
