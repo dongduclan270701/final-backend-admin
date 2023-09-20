@@ -1,9 +1,9 @@
 import { productChartModel } from '*/models/Admin/chart/productChart.model'
 import { cloneDeep } from 'lodash'
 
-const getTotalGoods = async (role) => {
+const getTotalGoods = async (data, role) => {
     try {
-        const productChart = await productChartModel.getTotalGoods(role)
+        const productChart = await productChartModel.getTotalGoods(data, role)
         const transformProductChart = cloneDeep(productChart)
         return transformProductChart
     } catch (error) {
@@ -11,9 +11,9 @@ const getTotalGoods = async (role) => {
     }
 }
 
-const getTotalOutOfStock = async (role) => {
+const getTotalOutOfStock = async (data, role) => {
     try {
-        const productChart = await productChartModel.getTotalOutOfStock(role)
+        const productChart = await productChartModel.getTotalOutOfStock(data, role)
         const transformProductChart = cloneDeep(productChart)
         return transformProductChart
     } catch (error) {
@@ -21,9 +21,9 @@ const getTotalOutOfStock = async (role) => {
     }
 }
 
-const getTotalAInStock = async (role) => {
+const getTotalAInStock = async (data, role) => {
     try {
-        const productChart = await productChartModel.getTotalAInStock(role)
+        const productChart = await productChartModel.getTotalAInStock(data, role)
         const transformProductChart = cloneDeep(productChart)
         return transformProductChart
     } catch (error) {
@@ -31,28 +31,18 @@ const getTotalAInStock = async (role) => {
     }
 }
 
-const getTotalSoldAndProfitOfMonth = async (role) => {
+const getTotalSoldAndProfitOfMonth = async (data, role) => {
     try {
-        const productChart = await productChartModel.getTotalSoldAndProfitOfMonth(role)
+        const productChart = await productChartModel.getTotalSoldAndProfitOfMonth(data, role)
         const transformProductChart = cloneDeep(productChart)
         return transformProductChart
     } catch (error) {
         throw new Error(error)
     }
 }
-const getTotalViewInMonth = async (role) => {
+const getTotalViewInMonth = async (data, role) => {
     try {
-        const productChart = await productChartModel.getTotalViewInMonth(role)
-        const transformProductChart = cloneDeep(productChart)
-        return transformProductChart
-    } catch (error) {
-        throw new Error(error)
-    }
-}
-
-const getTotalViewInYear = async (role) => {
-    try {
-        const productChart = await productChartModel.getTotalViewInYear(role)
+        const productChart = await productChartModel.getTotalViewInMonth(data, role)
         const transformProductChart = cloneDeep(productChart)
         return transformProductChart
     } catch (error) {
@@ -60,9 +50,9 @@ const getTotalViewInYear = async (role) => {
     }
 }
 
-const getTotalSoldInYear = async (role) => {
+const getTotalViewInYear = async (data, role) => {
     try {
-        const productChart = await productChartModel.getTotalSoldInYear(role)
+        const productChart = await productChartModel.getTotalViewInYear(data, role)
         const transformProductChart = cloneDeep(productChart)
         return transformProductChart
     } catch (error) {
@@ -70,9 +60,9 @@ const getTotalSoldInYear = async (role) => {
     }
 }
 
-const getTotalSoldByDay = async (role) => {
+const getTotalSoldInYear = async (data, role) => {
     try {
-        const productChart = await productChartModel.getTotalSoldByDay(role)
+        const productChart = await productChartModel.getTotalSoldInYear(data, role)
         const transformProductChart = cloneDeep(productChart)
         return transformProductChart
     } catch (error) {
@@ -80,9 +70,19 @@ const getTotalSoldByDay = async (role) => {
     }
 }
 
-const getTotalViewByDay = async (role) => {
+const getTotalSoldByDay = async (data, role) => {
     try {
-        const productChart = await productChartModel.getTotalViewByDay(role)
+        const productChart = await productChartModel.getTotalSoldByDay(data, role)
+        const transformProductChart = cloneDeep(productChart)
+        return transformProductChart
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getTotalViewByDay = async (data, role) => {
+    try {
+        const productChart = await productChartModel.getTotalViewByDay(data, role)
         const transformProductChart = cloneDeep(productChart)
         return transformProductChart
     } catch (error) {
@@ -110,9 +110,9 @@ const getSoldProductsByCategory = async (data, role) => {
     }
 }
 
-const getTopSoldProducts = async (role) => {
+const getTopSoldProducts = async (data, role) => {
     try {
-        const productChart = await productChartModel.getTopSoldProducts(role)
+        const productChart = await productChartModel.getTopSoldProducts(data, role)
         const transformProductChart = cloneDeep(productChart)
         return transformProductChart
     } catch (error) {
@@ -120,9 +120,9 @@ const getTopSoldProducts = async (role) => {
     }
 }
 
-const getTopViewProducts = async (role) => {
+const getTopViewProducts = async (data, role) => {
     try {
-        const productChart = await productChartModel.getTopViewProducts(role)
+        const productChart = await productChartModel.getTopViewProducts(data, role)
         const transformProductChart = cloneDeep(productChart)
         return transformProductChart
     } catch (error) {

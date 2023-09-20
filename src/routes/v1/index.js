@@ -2,6 +2,8 @@ import express from 'express'
 import { HttpStatusCode } from '*/utils/constants'
 import { laptopCollectingRoutes } from './Admin/admin_Panel/laptopCollecting.route'
 import { laptopGamingCollectingRoutes } from './Admin/admin_Panel/laptopGamingCollecting.route'
+import { pcGamingCollectingRoutes } from './Admin/admin_Panel/pcGamingCollecting.route'
+import { pcCreatorCollectingRoutes } from './Admin/admin_Panel/pcCreatorCollecting.route'
 import { orderAdminRoutes } from './Admin/orderAdmin.route'
 import { adminRoutes } from './Admin/admin.route'
 import { userAdminRoutes } from './Admin/userAdmin.route'
@@ -27,6 +29,10 @@ router.use('/managementUser', userAdminRoutes)
 router.use('/laptopCollecting', laptopCollectingRoutes)
 
 router.use('/laptopGamingCollecting', laptopGamingCollectingRoutes)
+
+router.use('/pcGamingCollecting', pcGamingCollectingRoutes)
+
+router.use('/pcCreatorCollecting', pcCreatorCollectingRoutes)
 
 router.use('/orderAdmin', orderAdminRoutes)
 

@@ -1,15 +1,15 @@
 import { getDB } from '*/config/mongodb.js'
 
 // Define Board collection
-const laptopCollectionName = 'laptop'
+// const data.collection = 'laptop'
 
-const getTotalGoods = async (role) => {
+const getTotalGoods = async (data, role) => {
     try {
         if (role.role === 'CEO') {
             const [
                 resultTotalGoods
             ] = await Promise.all([
-                getDB().collection(laptopCollectionName).find().toArray()
+                getDB().collection(data.collection).find().toArray()
             ])
             return {
                 total: resultTotalGoods.length,
@@ -22,13 +22,14 @@ const getTotalGoods = async (role) => {
         throw new Error(error)
     }
 }
-const getTotalOutOfStock = async (role) => {
+
+const getTotalOutOfStock = async (data, role) => {
     try {
         if (role.role === 'CEO') {
             const [
                 resultTotalGoodsOutStock
             ] = await Promise.all([
-                getDB().collection(laptopCollectionName).aggregate([
+                getDB().collection(data.collection).aggregate([
                     {
                         $match: {
                             quantity: 0,
@@ -48,14 +49,14 @@ const getTotalOutOfStock = async (role) => {
         throw new Error(error)
     }
 }
-const getTotalAInStock = async (role) => {
+const getTotalAInStock = async (data, role) => {
     try {
         if (role.role === 'CEO') {
             const [
                 resultTotalGoodsAvailable,
                 resultTotalInStock
             ] = await Promise.all([
-                getDB().collection(laptopCollectionName).aggregate([
+                getDB().collection(data.collection).aggregate([
                     {
                         $match: {
                             quantity: { $gt: 0 },
@@ -69,7 +70,7 @@ const getTotalAInStock = async (role) => {
                         }
                     }
                 ]).toArray(),
-                getDB().collection(laptopCollectionName).aggregate([
+                getDB().collection(data.collection).aggregate([
                     {
                         $match: {
                             quantity: { $gt: 0 },
@@ -90,13 +91,13 @@ const getTotalAInStock = async (role) => {
         throw new Error(error)
     }
 }
-const getTotalSoldAndProfitOfMonth = async (role) => {
+const getTotalSoldAndProfitOfMonth = async (data, role) => {
     try {
         if (role.role === 'CEO') {
             const [
                 totalSoldAndProfit
             ] = await Promise.all([
-                getDB().collection(laptopCollectionName).aggregate([
+                getDB().collection(data.collection).aggregate([
                     { $unwind: '$soldInMonth' },
                     {
                         $group: {
@@ -131,13 +132,13 @@ const getTotalSoldAndProfitOfMonth = async (role) => {
         throw new Error(error)
     }
 }
-const getTotalViewInMonth = async (role) => {
+const getTotalViewInMonth = async (data, role) => {
     try {
         if (role.role === 'CEO') {
             const [
                 totalView
             ] = await Promise.all([
-                getDB().collection(laptopCollectionName).aggregate([
+                getDB().collection(data.collection).aggregate([
                     { $unwind: '$viewInMonth' },
                     {
                         $group: {
@@ -163,13 +164,13 @@ const getTotalViewInMonth = async (role) => {
         throw new Error(error)
     }
 }
-const getTotalSoldInYear = async (role) => {
+const getTotalSoldInYear = async (data, role) => {
     try {
         if (role.role === 'CEO') {
             const [
                 totalSoldInYear
             ] = await Promise.all([
-                getDB().collection(laptopCollectionName).aggregate([
+                getDB().collection(data.collection).aggregate([
                     { $unwind: '$soldInYear' },
                     {
                         $group: {
@@ -195,13 +196,13 @@ const getTotalSoldInYear = async (role) => {
         throw new Error(error)
     }
 }
-const getTotalViewInYear = async (role) => {
+const getTotalViewInYear = async (data, role) => {
     try {
         if (role.role === 'CEO') {
             const [
                 totalViewInYear
             ] = await Promise.all([
-                getDB().collection(laptopCollectionName).aggregate([
+                getDB().collection(data.collection).aggregate([
                     { $unwind: '$viewInYear' },
                     {
                         $group: {
@@ -227,13 +228,13 @@ const getTotalViewInYear = async (role) => {
         throw new Error(error)
     }
 }
-const getTotalSoldByDay = async (role) => {
+const getTotalSoldByDay = async (data, role) => {
     try {
         if (role.role === 'CEO') {
             const [
                 totalSoldByDay
             ] = await Promise.all([
-                getDB().collection(laptopCollectionName).aggregate([
+                getDB().collection(data.collection).aggregate([
                     { $unwind: '$soldInMonth' },
                     {
                         $group: {
@@ -264,13 +265,13 @@ const getTotalSoldByDay = async (role) => {
         throw new Error(error)
     }
 }
-const getTotalViewByDay = async (role) => {
+const getTotalViewByDay = async (data, role) => {
     try {
         if (role.role === 'CEO') {
             const [
                 totalViewByDay
             ] = await Promise.all([
-                getDB().collection(laptopCollectionName).aggregate([
+                getDB().collection(data.collection).aggregate([
                     { $unwind: '$viewInMonth' },
                     {
                         $group: {
@@ -307,7 +308,7 @@ const getCountGoodsByCategory = async (data, role) => {
             const [
                 resultCount
             ] = await Promise.all([
-                getDB().collection(laptopCollectionName).aggregate([
+                getDB().collection(data.collection).aggregate([
                     {
                         $match: {
                             category: { $in: data.category }
@@ -362,7 +363,7 @@ const getCountGoodsByCategory = async (data, role) => {
 const getSoldProductsByCategory = async (data, role) => {
     try {
         if (role.role === 'CEO') {
-            const aggregationResult = await getDB().collection(laptopCollectionName).aggregate([
+            const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
                     $match: {
                         category: { $in: data.category }
@@ -400,11 +401,11 @@ const getSoldProductsByCategory = async (data, role) => {
         throw new Error(error)
     }
 }
-const getTopSoldProducts = async (role) => {
+const getTopSoldProducts = async (data, role) => {
     try {
         if (role.role === 'CEO') {
             const limit = 10
-            const aggregationResult = await getDB().collection(laptopCollectionName).aggregate([
+            const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
                     $project: {
                         _id: 0,
@@ -433,11 +434,11 @@ const getTopSoldProducts = async (role) => {
         throw new Error(error);
     }
 }
-const getTopViewProducts = async (role) => {
+const getTopViewProducts = async (data, role) => {
     try {
         if (role.role === 'CEO') {
             const limit = 10
-            const aggregationResult = await getDB().collection(laptopCollectionName).aggregate([
+            const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
                     $project: {
                         _id: 0,
