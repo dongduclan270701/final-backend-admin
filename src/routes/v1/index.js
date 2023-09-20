@@ -4,6 +4,7 @@ import { laptopCollectingRoutes } from './Admin/admin_Panel/laptopCollecting.rou
 import { laptopGamingCollectingRoutes } from './Admin/admin_Panel/laptopGamingCollecting.route'
 import { pcGamingCollectingRoutes } from './Admin/admin_Panel/pcGamingCollecting.route'
 import { pcCreatorCollectingRoutes } from './Admin/admin_Panel/pcCreatorCollecting.route'
+import { pcCompanyCollectingRoutes } from './Admin/admin_Panel/pcCompanyCollecting.route'
 import { orderAdminRoutes } from './Admin/orderAdmin.route'
 import { adminRoutes } from './Admin/admin.route'
 import { userAdminRoutes } from './Admin/userAdmin.route'
@@ -33,6 +34,8 @@ router.use('/laptopGamingCollecting', laptopGamingCollectingRoutes)
 router.use('/pcGamingCollecting', pcGamingCollectingRoutes)
 
 router.use('/pcCreatorCollecting', pcCreatorCollectingRoutes)
+
+router.use('/pcCompanyCollecting', pcCompanyCollectingRoutes)
 
 router.use('/orderAdmin', orderAdminRoutes)
 
