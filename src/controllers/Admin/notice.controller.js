@@ -15,8 +15,7 @@ const createNew = async (req, res) => {
 
 const getFullNotice = async (req, res) => {
     try {
-        const data = req.params
-        const result = await noticeService.getFullNotice(data)
+        const result = await noticeService.getFullNotice()
         res.status(HttpStatusCode.OK).json(result)
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({

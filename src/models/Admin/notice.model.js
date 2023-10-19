@@ -33,14 +33,15 @@ const createNew = async (data) => {
     }
 }
 
-const getFullNotice = async (data) => {
+const getFullNotice = async () => {
     try {
         const result = await getDB().collection(noticeName).aggregate([
             {
                 $match: {
-                    email: data.email,
+                    status: { $in:  ['Ordered', 'Cancel', 'Delivery failed'] },
                     _destroy: false
                 }
+                
             }
         ]).toArray()
         return result

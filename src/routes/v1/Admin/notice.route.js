@@ -3,13 +3,13 @@ import { noticeValidation } from '*/validations/notice.validation'
 import { noticeController } from '*/controllers/Admin/notice.controller'
 import jwt from 'jsonwebtoken'
 
-const authCustomer = (req, res, next) => {
-    const token = req.header('auth-token-user')
+const authAdmin = (req, res, next) => {
+    const token = req.header('auth-token-admin')
     if (!token) {
         return res.status(401).send('Access Denied')
     }
     try {
-        const verified = jwt.verify(token, process.env.TOKEN_SECRET_CUSTOMER)
+        const verified = jwt.verify(token, process.env.TOKEN_SECRET_ADMIN)
         req.result = verified
         next()
     } catch (error) {
@@ -20,10 +20,10 @@ const authCustomer = (req, res, next) => {
 const router = express.Router()
 
 router.route('/')
-    .post(authCustomer, noticeValidation.createNew, noticeController.createNew)
+    .post(authAdmin, noticeValidation.createNew, noticeController.createNew)
 
-router.route('/fetch/:email')
-    .get(authCustomer, noticeController.getFullNotice)
-    .put(authCustomer, noticeController.getUpdateNotice)
+router.route('/fetch')
+    .get(authAdmin, noticeController.getFullNotice)
+    .put(authAdmin, noticeController.getUpdateNotice)
 
 export const noticeRoutes = router
