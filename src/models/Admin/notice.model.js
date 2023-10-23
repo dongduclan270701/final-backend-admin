@@ -50,14 +50,13 @@ const getFullNotice = async () => {
     }
 }
 
-const getUpdateNotice = async (email, id) => {
+const getUpdateNotice = async (id) => {
     try {
         const updateNotice = await getDB().collection(noticeName).findOneAndUpdate(
             {
-                _id: ObjectId(id),
-                email: email.email
+                _id: ObjectId(id)
             },
-            { $set: { isReadCus: true } },
+            { $set: { isReadAdmin: true } },
             { returnDocument: 'after' }
         )
         return updateNotice.value

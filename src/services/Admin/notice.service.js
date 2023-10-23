@@ -21,9 +21,9 @@ const getFullNotice = async () => {
     }
 }
 
-const getUpdateNotice = async (email, id) => {
+const getUpdateNotice = async (id) => {
     try {
-        const notice = await noticeModel.getUpdateNotice(email, id)
+        const notice = await noticeModel.getUpdateNotice(id)
         const transformNotice = cloneDeep(notice)
         return transformNotice
     } catch (error) {
