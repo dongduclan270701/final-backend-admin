@@ -16,6 +16,7 @@ const createNewEmployee = async (data, role) => {
     }
 }
 
+
 const loginEmployee = async (email) => {
     try {
         const employee = await AdminModel.loginEmployee(email)
