@@ -5,7 +5,7 @@ const collectionName = 'admin'
 
 const getTotalEmployee = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotalEmployee
             ] = await Promise.all([
@@ -25,7 +25,7 @@ const getTotalEmployee = async (role) => {
 
 const getTotalEmployeeWorking = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotalEmployeeWorking
             ] = await Promise.all([
@@ -52,7 +52,7 @@ const getTotalEmployeeWorking = async (role) => {
 
 const getTotalAgeEmployee = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotalAgeEmployeeWorking,
                 resultTotalAgeEmployeeHasRetired
@@ -138,7 +138,7 @@ const getTotalAgeEmployee = async (role) => {
 
 const getTotalRole = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const result = await getDB().collection(collectionName).aggregate([
                 {
                     $match: {
@@ -175,7 +175,7 @@ const getTotalRole = async (role) => {
 
 const getTotalSoldInMonth = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotal
             ] = await Promise.all([
@@ -212,7 +212,7 @@ const getTotalSoldInMonth = async (role) => {
 
 const getTotalOrderInMonth = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotal
             ] = await Promise.all([
@@ -249,7 +249,7 @@ const getTotalOrderInMonth = async (role) => {
 
 const getTotalChartSoldInMonth = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotal
             ] = await Promise.all([
@@ -282,7 +282,7 @@ const getTotalChartSoldInMonth = async (role) => {
 }
 const getTotalChartOrderInMonth = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotal
             ] = await Promise.all([
@@ -313,7 +313,7 @@ const getTotalChartOrderInMonth = async (role) => {
 }
 const getTopEmployeeHighestValue = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const limit = 10
             const aggregationResult = await getDB().collection(collectionName).aggregate([
                 {
@@ -353,7 +353,7 @@ const getTopEmployeeHighestValue = async (role) => {
 }
 const getTopEmployeeHighestOrder = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const limit = 10
             const aggregationResult = await getDB().collection(collectionName).aggregate([
                 {
@@ -393,7 +393,7 @@ const getTopEmployeeHighestOrder = async (role) => {
 }
 const getTopEmployeeHighestValueInYear = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const limit = 10
             const aggregationResult = await getDB().collection(collectionName).aggregate([
                 {
@@ -433,7 +433,7 @@ const getTopEmployeeHighestValueInYear = async (role) => {
 }
 const getTopEmployeeHighestOrderInYear = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const limit = 10
             const aggregationResult = await getDB().collection(collectionName).aggregate([
                 {

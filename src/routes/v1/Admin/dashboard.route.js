@@ -41,7 +41,7 @@ router.route('/totalOrder')
 router.route('/totalOrderSuccessful')
     .get(authAdmin, dashboardController.getTotalOrderSuccessful)
 
-    router.route('/topEmployeeHighestValueInYearNotLimit')
+router.route('/topEmployeeHighestValueInYearNotLimit')
     .get(authAdmin, dashboardController.getTopEmployeeHighestValueInYearNotLimit)
 
 export const dashboardRoutes = router

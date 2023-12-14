@@ -5,7 +5,7 @@ const collectionName = 'users'
 
 const getTotalUsers = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotalUser
             ] = await Promise.all([
@@ -25,7 +25,7 @@ const getTotalUsers = async (role) => {
 
 const getTotalUserLoginLastMonth = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
             const lastMonth = currentDate.getFullYear() + '-' + (currentDate.getMonth()).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
@@ -71,7 +71,7 @@ const getTotalUserLoginLastMonth = async (role) => {
 
 const getTotalUserLoginOverMonth = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             const lastMonth = currentDate.getFullYear() + '-' + (currentDate.getMonth()).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
             const [
@@ -115,7 +115,7 @@ const getTotalUserLoginOverMonth = async (role) => {
 
 const getTotalUserAddGoodsToWishlist = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotalUser
             ] = await Promise.all([
@@ -145,7 +145,7 @@ const getTotalUserAddGoodsToWishlist = async (role) => {
 
 const getTotalUserPurchased = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotalUser
             ] = await Promise.all([
@@ -175,7 +175,7 @@ const getTotalUserPurchased = async (role) => {
 
 const getTotalUserJoinInMonth = async (role) => {
     try {
-        // if (role.role === 'CEO') {
+        // if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
         //     const currentDate = new Date()
         //     currentDate.setDate(1)
         //     const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
@@ -211,7 +211,7 @@ const getTotalUserJoinInMonth = async (role) => {
         // } else {
         //     return 0
         // }
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             const currentMonth = currentDate.getMonth()
             const currentYear = currentDate.getFullYear()
@@ -256,7 +256,7 @@ const getTotalUserJoinInMonth = async (role) => {
 
 const getTotalAgeUser = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotalAgeUser
             ] = await Promise.all([
@@ -312,7 +312,7 @@ const getTotalAgeUser = async (role) => {
 
 const getTotalStatusUser = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotalStatusUserActive,
                 resultTotalStatusUserDeactivate
@@ -349,7 +349,7 @@ const getTotalStatusUser = async (role) => {
 
 const getTopUserHighestValue = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             currentDate.setDate(1)
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
@@ -404,7 +404,7 @@ const getTopUserHighestValue = async (role) => {
 
 const getTopUserHighestOrder = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             currentDate.setDate(1)
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
@@ -442,7 +442,7 @@ const getTopUserHighestOrder = async (role) => {
 }
 const getTopUserHighestValueAll = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTopUser
             ] = await Promise.all([
@@ -490,7 +490,7 @@ const getTopUserHighestValueAll = async (role) => {
 }
 const getTopUserHighestOrderAll = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const resultTopUser = await getDB().collection('users').aggregate([
                 {
                     $match: {

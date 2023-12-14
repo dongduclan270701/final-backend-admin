@@ -5,7 +5,7 @@ const collectionName = 'laptop'
 
 const getTopSoldProducts = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const limit = 10
             const aggregationResult = await getDB().collection(data.category).aggregate([
                 {
@@ -38,7 +38,7 @@ const getTopSoldProducts = async (data, role) => {
 }
 const getTopViewProducts = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const limit = 10
             const aggregationResult = await getDB().collection(data.category).aggregate([
                 {
@@ -71,7 +71,7 @@ const getTopViewProducts = async (data, role) => {
 }
 const getTotalOrder = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             currentDate.setFullYear(2023, 0, 1)
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
@@ -108,7 +108,7 @@ const getTotalOrder = async (role) => {
 
 const getTotalOrderSuccessful = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             currentDate.setDate(1)
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
@@ -143,7 +143,7 @@ const getTotalOrderSuccessful = async (role) => {
 }
 const getTopEmployeeHighestValueInYearNotLimit = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const aggregationResult = await getDB().collection('admin').aggregate([
                 {
                     $match: {

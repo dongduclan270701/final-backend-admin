@@ -5,7 +5,7 @@ const collectionName = 'order'
 
 const getTotalOrder = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             currentDate.setDate(1)
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
@@ -41,7 +41,7 @@ const getTotalOrder = async (role) => {
 
 const getTotalOrderSuccessful = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             currentDate.setDate(1)
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
@@ -77,7 +77,7 @@ const getTotalOrderSuccessful = async (role) => {
 
 const getTotalOrderFailed = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             currentDate.setDate(1)
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
@@ -113,7 +113,7 @@ const getTotalOrderFailed = async (role) => {
 
 const getTotalOrderByStatus = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             currentDate.setDate(1)
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
@@ -157,7 +157,7 @@ const getTotalOrderByStatus = async (role) => {
 
 const getTotalTopOrder = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             currentDate.setDate(1)
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
@@ -201,7 +201,7 @@ const getTotalTopOrder = async (role) => {
 }
 const getTotalTopProduct = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             currentDate.setDate(1)
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
@@ -240,7 +240,7 @@ const getTotalTopProduct = async (role) => {
 }
 const getTotalTopOrderAll = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const resultTotalOrder = await getDB().collection(collectionName).aggregate([
                 {
                     $match: {
@@ -278,7 +278,7 @@ const getTotalTopOrderAll = async (role) => {
 }
 const getTotalTopProductAll = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const resultTopProduct = await getDB().collection(collectionName).aggregate([
                 {
                     $match: {
@@ -311,7 +311,7 @@ const getTotalTopProductAll = async (role) => {
 }
 const getTotalOrdersByDay = async (role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const currentDate = new Date()
             const currentMonth = currentDate.getMonth()
             const currentYear = currentDate.getFullYear()

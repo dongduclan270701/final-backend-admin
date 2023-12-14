@@ -5,7 +5,7 @@ import { getDB } from '*/config/mongodb.js'
 
 const getTotalGoods = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotalGoods
             ] = await Promise.all([
@@ -25,7 +25,7 @@ const getTotalGoods = async (data, role) => {
 
 const getTotalOutOfStock = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotalGoodsOutStock
             ] = await Promise.all([
@@ -51,7 +51,7 @@ const getTotalOutOfStock = async (data, role) => {
 }
 const getTotalAInStock = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultTotalGoodsAvailable,
                 resultTotalInStock
@@ -93,7 +93,7 @@ const getTotalAInStock = async (data, role) => {
 }
 const getTotalSoldAndProfitOfMonth = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 totalSoldAndProfit
             ] = await Promise.all([
@@ -134,7 +134,7 @@ const getTotalSoldAndProfitOfMonth = async (data, role) => {
 }
 const getTotalViewInMonth = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 totalView
             ] = await Promise.all([
@@ -166,7 +166,7 @@ const getTotalViewInMonth = async (data, role) => {
 }
 const getTotalSoldInYear = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 totalSoldInYear
             ] = await Promise.all([
@@ -198,7 +198,7 @@ const getTotalSoldInYear = async (data, role) => {
 }
 const getTotalViewInYear = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 totalViewInYear
             ] = await Promise.all([
@@ -230,7 +230,7 @@ const getTotalViewInYear = async (data, role) => {
 }
 const getTotalSoldByDay = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 totalSoldByDay
             ] = await Promise.all([
@@ -267,7 +267,7 @@ const getTotalSoldByDay = async (data, role) => {
 }
 const getTotalViewByDay = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 totalViewByDay
             ] = await Promise.all([
@@ -304,7 +304,7 @@ const getTotalViewByDay = async (data, role) => {
 }
 const getCountGoodsByCategory = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
                 resultCount
             ] = await Promise.all([
@@ -362,7 +362,7 @@ const getCountGoodsByCategory = async (data, role) => {
 }
 const getSoldProductsByCategory = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
                     $match: {
@@ -403,7 +403,7 @@ const getSoldProductsByCategory = async (data, role) => {
 }
 const getTopSoldProducts = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const limit = 10
             const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
@@ -436,7 +436,7 @@ const getTopSoldProducts = async (data, role) => {
 }
 const getTopViewProducts = async (data, role) => {
     try {
-        if (role.role === 'CEO') {
+        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const limit = 10
             const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
