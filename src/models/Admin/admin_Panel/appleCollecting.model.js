@@ -90,7 +90,7 @@ const getFullAppleCollecting = async (data, role) => {
     try {
         let perPage = 10
         let page = parseInt(data.count)
-        if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
+        if (role.role === 'CEO') {
             return 0
         } else {
             const result = await getDB().collection(appleCollectionName).find().limit(perPage).skip((perPage * page) - perPage).toArray()
