@@ -163,6 +163,9 @@ const getTotalTopOrder = async (role) => {
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
             const resultTotalOrder = await getDB().collection(collectionName).aggregate([
                 {
+                    $unwind: '$product'
+                },
+                {
                     $match: {
                         // status: { $in: ['Being transported', 'Payment information confirmed', 'Delivered to the carrier', 'Delivery successful'] },
                         status: { $in: ['Delivery successful'] },
@@ -175,15 +178,14 @@ const getTotalTopOrder = async (role) => {
                 {
                     $group: {
                         _id: '$_id',
-                        order: { $first: '$$ROOT' }
+                        sumOrder: { $sum: '$sumOrder' },
+                        order: { $first: '$$ROOT' },
+                        productCount: { $sum: '$product.quantity' }
                     }
                 },
                 {
                     $sort: { 'sumOrder': -1 }
                 },
-                // {
-                //     $replaceRoot: { newRoot: '$order' }
-                // },
                 {
                     $limit: 10
                 }
@@ -207,6 +209,9 @@ const getTotalTopProduct = async (role) => {
             const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
             const resultTopProduct = await getDB().collection(collectionName).aggregate([
                 {
+                    $unwind: '$product'
+                },
+                {
                     $match: {
                         status: { $in: ['Delivery successful'] },
                         createDate: {
@@ -216,8 +221,10 @@ const getTotalTopProduct = async (role) => {
                     }
                 },
                 {
-                    $addFields: {
-                        productCount: { $size: '$product' }
+                    $group: {
+                        _id: '$_id',
+                        order: { $first: '$$ROOT' },
+                        productCount: { $sum: '$product.quantity' }
                     }
                 },
                 {
@@ -243,8 +250,10 @@ const getTotalTopOrderAll = async (role) => {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const resultTotalOrder = await getDB().collection(collectionName).aggregate([
                 {
+                    $unwind: '$product'
+                },
+                {
                     $match: {
-                        // status: { $in: ['Being transported', 'Payment information confirmed', 'Delivered to the carrier', 'Delivery successful'] },
                         status: { $in: ['Delivery successful'] },
                         _destroy: false
                     }
@@ -252,7 +261,9 @@ const getTotalTopOrderAll = async (role) => {
                 {
                     $group: {
                         _id: '$_id',
-                        order: { $first: '$$ROOT' }
+                        order: { $first: '$$ROOT' },
+                        sumOrder: { $sum: '$sumOrder' },
+                        productCount: { $sum: '$product.quantity' }
                     }
                 },
                 {
@@ -261,10 +272,7 @@ const getTotalTopOrderAll = async (role) => {
                 // {
                 //     $replaceRoot: { newRoot: '$order' }
                 // },
-                {
-                    $limit: 10
-                }
-            ]).toArray()
+            ]).limit(10).toArray()
             return {
                 resultTotalOrder,
                 role: role.role
@@ -281,14 +289,19 @@ const getTotalTopProductAll = async (role) => {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const resultTopProduct = await getDB().collection(collectionName).aggregate([
                 {
+                    $unwind: '$product'
+                },
+                {
                     $match: {
                         status: { $in: ['Delivery successful'] },
                         _destroy: false
                     }
                 },
                 {
-                    $addFields: {
-                        productCount: { $size: '$product' }
+                    $group: {
+                        _id: '$_id',
+                        order: { $first: '$$ROOT' },
+                        productCount: { $sum: '$product.quantity' }
                     }
                 },
                 {

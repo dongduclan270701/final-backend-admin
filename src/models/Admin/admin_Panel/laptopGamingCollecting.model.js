@@ -27,10 +27,8 @@ const laptopGamingCollectionSchema = Joi.object({
     updateAt: Joi.date().timestamp().default(null),
     _destroy: Joi.boolean().default(false),
     importCost: Joi.number().integer().min(0).default(0),
-    viewInMonth: Joi.array().default([]),
     viewInYear: Joi.array().default([]),
-    soldInMonth: Joi.array().default([]),
-    soldInYear: Joi.array().default([])
+    showInMonth: Joi.array().default([])
 })
 
 const validateSchema = async (data) => {

@@ -94,19 +94,33 @@ const getTotalAInStock = async (data, role) => {
 const getTotalSoldAndProfitOfMonth = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
+            const today = new Date()
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
+            const currentYear = today.getFullYear();
+            const firstDayOfYear = new Date(currentYear, 0, 2)
+            const lastDayOfYear = new Date(currentYear, 11, 32)
             const [
                 totalSoldAndProfit
             ] = await Promise.all([
                 getDB().collection(data.collection).aggregate([
-                    { $unwind: '$soldInMonth' },
+                    { $unwind: '$showInYear' },
+                    {
+                        $match: {
+                            'showInYear.date': {
+                                $gte: firstDayOfMonth.toISOString().slice(0, 10),
+                                $lte: lastDayOfMonth.toISOString().slice(0, 10)
+                            }
+                        }
+                    },
                     {
                         $group: {
                             _id: null,
-                            totalSold: { $sum: '$soldInMonth.sold' },
+                            totalSold: { $sum: '$showInYear.sold' },
                             totalProfit: {
                                 $sum: {
                                     $multiply: [
-                                        '$soldInMonth.sold',
+                                        '$showInYear.sold',
                                         { $subtract: ['$nowPrice', '$importCost'] }
                                     ]
                                 }
@@ -135,26 +149,40 @@ const getTotalSoldAndProfitOfMonth = async (data, role) => {
 const getTotalViewInMonth = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
-            const [
-                totalView
-            ] = await Promise.all([
-                getDB().collection(data.collection).aggregate([
-                    { $unwind: '$viewInMonth' },
-                    {
-                        $group: {
-                            _id: null,
-                            totalView: { $sum: '$viewInMonth.view' }
-                        }
-                    },
-                    {
-                        $project: {
-                            _id: 0
+            const today = new Date()
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
+            const currentYear = today.getFullYear();
+            const firstDayOfYear = new Date(currentYear, 0, 2)
+            const lastDayOfYear = new Date(currentYear, 11, 32)
+            const aggregationResult = await getDB().collection(data.collection).aggregate([
+                {
+                    $unwind: '$viewInYear' // Bung ra từng phần tử trong mảng viewInYear
+                },
+                {
+                    $match: {
+                        'viewInYear.date': {
+                            $gte: firstDayOfMonth.toISOString().slice(0, 10),
+                            $lte: lastDayOfMonth.toISOString().slice(0, 10)
                         }
                     }
-                ]).toArray()
-            ])
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        nameProduct: { $first: '$nameProduct' },
+                        category: { $first: '$category' },
+                        nowPrice: { $first: '$nowPrice' },
+                        quantity: { $first: '$quantity' },
+                        totalView: { $sum: '$viewInYear.view' }
+                    }
+                },
+                {
+                    $sort: { totalView: -1 }
+                }
+            ]).toArray();
             return {
-                totalView: totalView[0].totalView,
+                totalView: aggregationResult,
                 role: role.role
             }
         } else {
@@ -167,15 +195,27 @@ const getTotalViewInMonth = async (data, role) => {
 const getTotalSoldInYear = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
+            const today = new Date()
+            const currentYear = today.getFullYear();
+            const firstDayOfYear = new Date(currentYear, 0, 2)
+            const lastDayOfYear = new Date(currentYear, 11, 32)
             const [
                 totalSoldInYear
             ] = await Promise.all([
                 getDB().collection(data.collection).aggregate([
-                    { $unwind: '$soldInYear' },
+                    { $unwind: '$showInYear' },
+                    {
+                        $match: {
+                            'showInYear.date': {
+                                $gte: firstDayOfYear.toISOString().slice(0, 10),
+                                $lte: lastDayOfYear.toISOString().slice(0, 10)
+                            }
+                        }
+                    },
                     {
                         $group: {
                             _id: null,
-                            totalSoldInYear: { $sum: '$soldInYear.sold' }
+                            totalSoldInYear: { $sum: '$showInYear.sold' }
                         }
                     },
                     {
@@ -199,26 +239,38 @@ const getTotalSoldInYear = async (data, role) => {
 const getTotalViewInYear = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
-            const [
-                totalViewInYear
-            ] = await Promise.all([
-                getDB().collection(data.collection).aggregate([
-                    { $unwind: '$viewInYear' },
-                    {
-                        $group: {
-                            _id: null,
-                            totalViewInYear: { $sum: '$viewInYear.view' }
-                        }
-                    },
-                    {
-                        $project: {
-                            _id: 0
+            const today = new Date()
+            const currentYear = today.getFullYear();
+            const firstDayOfYear = new Date(currentYear, 0, 2)
+            const lastDayOfYear = new Date(currentYear, 11, 32)
+            const aggregationResult = await getDB().collection(data.collection).aggregate([
+                {
+                    $unwind: '$viewInYear' // Bung ra từng phần tử trong mảng viewInYear
+                },
+                {
+                    $match: {
+                        'viewInYear.date': {
+                            $gte: firstDayOfYear.toISOString().slice(0, 10),
+                            $lte: lastDayOfYear.toISOString().slice(0, 10)
                         }
                     }
-                ]).toArray()
-            ])
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        nameProduct: { $first: '$nameProduct' },
+                        category: { $first: '$category' },
+                        nowPrice: { $first: '$nowPrice' },
+                        quantity: { $first: '$quantity' },
+                        totalView: { $sum: '$viewInYear.view' }
+                    }
+                },
+                {
+                    $sort: { totalView: -1 }
+                }
+            ]).toArray();
             return {
-                totalViewInYear: totalViewInYear[0].totalViewInYear,
+                totalViewInYear: aggregationResult,
                 role: role.role
             }
         } else {
@@ -231,15 +283,26 @@ const getTotalViewInYear = async (data, role) => {
 const getTotalSoldByDay = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
+            const today = new Date()
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const [
                 totalSoldByDay
             ] = await Promise.all([
                 getDB().collection(data.collection).aggregate([
-                    { $unwind: '$soldInMonth' },
+                    { $unwind: '$showInYear' },
+                    {
+                        $match: {
+                            'showInYear.date': {
+                                $gte: firstDayOfMonth.toISOString().slice(0, 10),
+                                $lte: lastDayOfMonth.toISOString().slice(0, 10)
+                            }
+                        }
+                    },
                     {
                         $group: {
-                            _id: '$soldInMonth.day',
-                            totalSold: { $sum: '$soldInMonth.sold' }
+                            _id: '$showInYear.date',
+                            totalSold: { $sum: '$showInYear.sold' }
                         }
                     },
                     {
@@ -250,7 +313,7 @@ const getTotalSoldByDay = async (data, role) => {
                         }
                     },
                     {
-                        $sort: { day: 1 }
+                        $sort: { day: -1 }
                     }
                 ]).toArray()
             ])
@@ -268,26 +331,37 @@ const getTotalSoldByDay = async (data, role) => {
 const getTotalViewByDay = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
+            const today = new Date()
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const [
                 totalViewByDay
             ] = await Promise.all([
                 getDB().collection(data.collection).aggregate([
-                    { $unwind: '$viewInMonth' },
+                    { $unwind: '$viewInYear' },
+                    {
+                        $match: {
+                            'viewInYear.date': {
+                                $gte: firstDayOfMonth.toISOString().slice(0, 10),
+                                $lte: lastDayOfMonth.toISOString().slice(0, 10)
+                            }
+                        }
+                    },
                     {
                         $group: {
-                            _id: '$viewInMonth.day',
-                            totalView: { $sum: '$viewInMonth.view' }
+                            _id: '$viewInYear.date',
+                            totalView: { $sum: '$viewInYear.view' }
                         }
                     },
                     {
                         $project: {
                             _id: 0,
-                            day: '$_id',
+                            date: '$_id',
                             totalView: 1
                         }
                     },
                     {
-                        $sort: { day: 1 }
+                        $sort: { date: 1 }
                     }
                 ]).toArray()
             ])
@@ -363,10 +437,20 @@ const getCountGoodsByCategory = async (data, role) => {
 const getSoldProductsByCategory = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
+            const today = new Date()
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
+                    $unwind: '$viewInYear' // Bung ra từng phần tử trong mảng viewInYear
+                },
+                {
                     $match: {
-                        category: { $in: data.category }
+                        category: { $in: data.category },
+                        'viewInYear.date': {
+                            $gte: firstDayOfMonth.toISOString().slice(0, 10),
+                            $lte: lastDayOfMonth.toISOString().slice(0, 10)
+                        }
                     }
                 },
                 {
@@ -385,8 +469,8 @@ const getSoldProductsByCategory = async (data, role) => {
                 {
                     $group: {
                         _id: '$category',
-                        totalSold: { $sum: { $sum: '$soldInMonth.sold' } },
-                        totalView: { $sum: { $sum: '$viewInMonth.view' } }
+                        totalSold: { $sum: { $sum: '$showInYear.sold' } },
+                        totalView: { $sum: { $sum: '$viewInYear.view' } }
                     }
                 }
             ]).toArray()
@@ -405,15 +489,29 @@ const getTopSoldProducts = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const limit = 10
+            const today = new Date()
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
-                    $project: {
-                        _id: 0,
-                        nameProduct: 1,
-                        category: 1,
-                        nowPrice: 1,
-                        quantity: 1,
-                        totalSold: { $sum: '$soldInMonth.sold' }
+                    $unwind: '$showInYear' // Bung ra từng phần tử trong mảng soldInYear
+                },
+                {
+                    $match: {
+                        'showInYear.date': {
+                            $gte: firstDayOfMonth.toISOString().slice(0, 10),
+                            $lte: lastDayOfMonth.toISOString().slice(0, 10)
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        nameProduct: { $first: '$nameProduct' },
+                        category: { $first: '$category' },
+                        nowPrice: { $first: '$nowPrice' },
+                        quantity: { $first: '$quantity' },
+                        totalSold: { $sum: '$showInYear.sold' }
                     }
                 },
                 {
@@ -422,7 +520,7 @@ const getTopSoldProducts = async (data, role) => {
                 {
                     $limit: limit
                 }
-            ]).toArray()
+            ]).toArray();
             return {
                 topSoldProducts: aggregationResult,
                 role: role.role
@@ -437,16 +535,30 @@ const getTopSoldProducts = async (data, role) => {
 const getTopViewProducts = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
+            const today = new Date()
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const limit = 10
             const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
-                    $project: {
-                        _id: 0,
-                        nameProduct: 1,
-                        category: 1,
-                        nowPrice: 1,
-                        quantity: 1,
-                        totalView: { $sum: '$viewInMonth.view' }
+                    $unwind: '$viewInYear' // Bung ra từng phần tử trong mảng viewInYear
+                },
+                {
+                    $match: {
+                        'viewInYear.date': {
+                            $gte: firstDayOfMonth.toISOString().slice(0, 10),
+                            $lte: lastDayOfMonth.toISOString().slice(0, 10)
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        nameProduct: { $first: '$nameProduct' },
+                        category: { $first: '$category' },
+                        nowPrice: { $first: '$nowPrice' },
+                        quantity: { $first: '$quantity' },
+                        totalView: { $sum: '$viewInYear.view' }
                     }
                 },
                 {
@@ -455,7 +567,7 @@ const getTopViewProducts = async (data, role) => {
                 {
                     $limit: limit
                 }
-            ]).toArray()
+            ]).toArray();
             return {
                 topViewProducts: aggregationResult,
                 role: role.role

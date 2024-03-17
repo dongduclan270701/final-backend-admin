@@ -59,7 +59,26 @@ const updateOrder = async (id, data, role) => {
             { $set: { 'orders.$.status': newUpdateData.status } },
             { returnDocument: 'after' }
         )
-
+        if (newUpdateData.status === 'Delivery successful') {
+            
+            for (const item of newUpdateData.product) {
+                
+                const soldInYearIndex = item.showInYear.findIndex(item => item.date === newUpdateData.createDate)
+                
+                if (soldInYearIndex !== -1) {
+                    // Nếu ngày đã tồn tại, tăng giá trị sold tương ứng
+                    item.showInYear[soldInYearIndex].sold += item.quantity
+                } else {
+                    // Nếu ngày chưa tồn tại, tạo một bản ghi mới
+                    item.showInYear.push({ date: newUpdateData.createDate, sold: item.quantity });
+                }
+                const updateNewProduct = await getDB().collection(item.collection).findOneAndUpdate(
+                    { src: item.src },
+                    { $set: item },
+                    { returnDocument: 'after' }
+                )
+            }
+        }
         return updateOrder.value
     } catch (error) {
         throw new Error(error)
@@ -71,7 +90,40 @@ const getFullOrder = async (data, role) => {
     try {
         let perPage = 10
         let page = parseInt(data.count)
-        const result = await getDB().collection(orderName).find().limit(perPage).skip((perPage * page) - perPage).toArray()
+        const result = await getDB().collection(orderName).aggregate([
+            {
+                $addFields: {
+                    orderedShippingProcess: {
+                        $filter: {
+                            input: '$shipping_process',
+                            cond: {
+                                $and: [
+                                    { $eq: ['$$this.content', 'Ordered'] },
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $match: {
+                    orderedShippingProcess: { $ne: [] }
+                }
+            },
+            {
+                $addFields: {
+                    lastProcess: { $arrayElemAt: ['$orderedShippingProcess', -1] },
+                    dateCount: { $toDate: { $arrayElemAt: ['$orderedShippingProcess.date', -1] } }
+                }
+            },
+            {
+                $sort: {
+                    dateCount: -1,
+                    'lastProcess.date': -1,
+                    'lastProcess.time': -1
+                }
+            }
+        ]).limit(perPage).skip((perPage * page) - perPage).toArray()
         const resultTotal = await getDB().collection(orderName).find().toArray()
         return { data: [...result], total: resultTotal.length, role: role.role, chartData: resultTotal }
     } catch (error) {

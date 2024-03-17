@@ -17,6 +17,7 @@ import { usersChartRoutes } from './Admin/usersChart.route'
 import { orderChartRoutes } from './Admin/orderChart.route'
 import { dashboardRoutes } from './Admin/dashboard.route'
 import { noticeRoutes } from './Admin/notice.route'
+import { requestRoutes } from './Admin/request.route'
 const router = express.Router()
 
 // GET v1/status
@@ -58,5 +59,7 @@ router.use('/orderChart', orderChartRoutes)
 router.use('/dashboard', dashboardRoutes)
 
 router.use('/notice', noticeRoutes)
+
+router.use('/request', requestRoutes)
 
 export const apiV1 = router

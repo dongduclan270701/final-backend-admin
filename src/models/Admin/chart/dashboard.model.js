@@ -12,7 +12,10 @@ const getTopSoldProducts = async (data, role) => {
                     $project: {
                         _id: 0,
                         nameProduct: 1,
+                        src: 1,
                         category: 1,
+                        collection: 1,
+                        img: 1,
                         nowPrice: 1,
                         quantity: 1,
                         totalSold: { $sum: '$soldInMonth.sold' }
@@ -45,6 +48,9 @@ const getTopViewProducts = async (data, role) => {
                     $project: {
                         _id: 0,
                         nameProduct: 1,
+                        src: 1,
+                        collection: 1,
+                        img: 1,
                         category: 1,
                         nowPrice: 1,
                         quantity: 1,
@@ -71,19 +77,22 @@ const getTopViewProducts = async (data, role) => {
 }
 const getTotalOrder = async (role) => {
     try {
+        const today = new Date()
+        const currentYear = today.getFullYear();
+        const firstDayOfYear = new Date(currentYear, 0, 2)
+        const lastDayOfYear = new Date(currentYear, 11, 32)
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
-            const currentDate = new Date()
-            currentDate.setFullYear(2023, 0, 1)
-            const now = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1).toString().padStart(2, '0') + '-' + currentDate.getDate().toString().padStart(2, '0')
             const [
                 resultTotalOrder
             ] = await Promise.all([
                 getDB().collection('order').aggregate([
                     {
                         $match: {
-                            status: { $in: ['Ordered', 'Being transported', 'Payment information confirmed', 'Delivered to the carrier', 'Delivery successful'] },
+                            status: { $in: ['Delivery successful'] },
                             'createDate': {
-                                $gte: now.toString()
+                                // $gte: now.toString()
+                                $gte: firstDayOfYear.toISOString().slice(0, 10),
+                                $lte: lastDayOfYear.toISOString().slice(0, 10)
                             }
                         }
                     }
@@ -97,7 +106,7 @@ const getTotalOrder = async (role) => {
                 totalAmount: totalSumOrder,
                 role: role.role
             }
-            
+
         } else {
             return 0
         }
@@ -157,7 +166,7 @@ const getTopEmployeeHighestValueInYearNotLimit = async (role) => {
                         username: 1,
                         role: 1,
                         status: 1,
-                        image:1,
+                        image: 1,
                         totalProduct: { $sum: '$soldProductInYear.soldProduct' },
                         totalAmount: { $sum: '$soldProductInYear.amount' }
                     }

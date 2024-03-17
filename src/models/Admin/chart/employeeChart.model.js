@@ -176,6 +176,14 @@ const getTotalRole = async (role) => {
 const getTotalSoldInMonth = async (role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
+            const currentDate = new Date()
+            currentDate.setDate(1)
+            const today = new Date()
+            const currentYear = today.getFullYear();
+            const firstDayOfYear = new Date(currentYear, 0, 2)
+            const lastDayOfYear = new Date(currentYear, 11, 32)
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const [
                 resultTotal
             ] = await Promise.all([
@@ -199,8 +207,44 @@ const getTotalSoldInMonth = async (role) => {
                     }
                 ]).toArray()
             ])
+            const [
+                resultTotalOrderInMonth,
+                resultTotalOrderInYear
+            ] = await Promise.all([
+                getDB().collection('order').aggregate([
+                    {
+                        $match: {
+                            status: { $in: ['Delivery successful'] },
+                            'createDate': {
+                                $gte: firstDayOfMonth.toISOString().slice(0, 10),
+                                $lte: lastDayOfMonth.toISOString().slice(0, 10)
+                            }
+                        }
+                    }
+                ]).toArray(),
+                getDB().collection('order').aggregate([
+                    {
+                        $match: {
+                            status: { $in: ['Delivery successful'] },
+                            'createDate': {
+                                $gte: firstDayOfYear.toISOString().slice(0, 10),
+                                $lte: lastDayOfYear.toISOString().slice(0, 10)
+                            }
+                        }
+                    }
+                ]).toArray()
+            ])
+            
+            const totalSumProductInMonth = resultTotalOrderInMonth.reduce((acc, order) => {
+                return acc + order.product.length
+            }, 0)
+            const totalSumProductInYear = resultTotalOrderInYear.reduce((acc, order) => {
+                return acc + order.product.length
+            }, 0)
             return {
-                resultTotal
+                resultTotal,
+                totalSumProductInMonth,
+                totalSumProductInYear
             }
         } else {
             return 0
@@ -250,28 +294,84 @@ const getTotalOrderInMonth = async (role) => {
 const getTotalChartSoldInMonth = async (role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
+            const currentDate = new Date()
+            currentDate.setDate(1)
+            const today = new Date()
+            const currentYear = today.getFullYear();
+            const firstDayOfYear = new Date(currentYear, 0, 2)
+            const lastDayOfYear = new Date(currentYear, 11, 32)
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
+            
+            // const [
+            //     resultTotal
+            // ] = await Promise.all([
+            //     getDB().collection(collectionName).aggregate([
+            //         {
+            //             $match: {
+            //                 role: 'SALES',
+            //                 _destroy: false
+            //             }
+            //         },
+            //         {
+            //             $project: {
+            //                 _id: 0,
+            //                 soldProductInMonth: '$soldProductInMonth',
+            //                 target: '$kpiInMonth',
+            //                 salary: '$salary'
+            //             }
+            //         }
+            //     ]).toArray()
+            // ])
             const [
-                resultTotal
+                resultTotalOrderInMonth,
+                resultTotalOrderInYear
             ] = await Promise.all([
-                getDB().collection(collectionName).aggregate([
+                getDB().collection('order').aggregate([
+                    {
+                        $unwind: '$product'
+                    },
                     {
                         $match: {
-                            role: 'SALES',
-                            _destroy: false
+                            status: { $in: ['Delivery successful'] },
+                            'createDate': {
+                                $gte: firstDayOfMonth.toISOString().slice(0, 10),
+                                $lte: lastDayOfMonth.toISOString().slice(0, 10)
+                            }
                         }
                     },
                     {
-                        $project: {
-                            _id: 0,
-                            soldProductInMonth: '$soldProductInMonth',
-                            target: '$kpiInMonth',
-                            salary: '$salary'
+                        $group: {
+                            _id: null,
+                            totalGoods: { $sum: '$product.quantity' }
+                        }
+                    }
+                ]).toArray(),
+                getDB().collection('order').aggregate([
+                    {
+                        $unwind: '$product'
+                    },
+                    {
+                        $match: {
+                            status: { $in: ['Delivery successful'] },
+                            'createDate': {
+                                $gte: firstDayOfYear.toISOString().slice(0, 10),
+                                $lte: lastDayOfYear.toISOString().slice(0, 10)
+                            }
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            totalGoods: { $sum: '$product.quantity' }
                         }
                     }
                 ]).toArray()
             ])
             return {
-                resultTotal
+                // resultTotal,
+                totalSumProductInMonth: resultTotalOrderInMonth[0].totalGoods,
+                totalSumProductInYear: resultTotalOrderInYear[0].totalGoods
             }
         } else {
             return 0
@@ -328,7 +428,7 @@ const getTopEmployeeHighestValue = async (role) => {
                         username: 1,
                         role: 1,
                         status: 1,
-                        image:1,
+                        image: 1,
                         totalProduct: { $sum: '$soldProductInMonth.soldProduct' },
                         totalAmount: { $sum: '$soldProductInMonth.amount' }
                     }
@@ -368,7 +468,7 @@ const getTopEmployeeHighestOrder = async (role) => {
                         username: 1,
                         role: 1,
                         status: 1,
-                        image:1,
+                        image: 1,
                         totalOrder: { $sum: '$soldOrderInMonth.order' },
                         totalAmount: { $sum: '$soldOrderInMonth.amount' }
                     }
@@ -408,7 +508,7 @@ const getTopEmployeeHighestValueInYear = async (role) => {
                         username: 1,
                         role: 1,
                         status: 1,
-                        image:1,
+                        image: 1,
                         totalProduct: { $sum: '$soldProductInYear.soldProduct' },
                         totalAmount: { $sum: '$soldProductInYear.amount' }
                     }
@@ -448,7 +548,7 @@ const getTopEmployeeHighestOrderInYear = async (role) => {
                         username: 1,
                         role: 1,
                         status: 1,
-                        image:1,
+                        image: 1,
                         totalOrder: { $sum: '$soldOrderInYear.order' },
                         totalAmount: { $sum: '$soldOrderInYear.amount' }
                     }

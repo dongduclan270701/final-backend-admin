@@ -367,7 +367,7 @@ const getTopUserHighestValue = async (role) => {
                     },
                     {
                         $match: {
-                            'orders.status': { $in: ['Being transported', 'Payment information confirmed', 'Delivered to the carrier', 'Ordered', 'Delivery successful'] },
+                            'orders.status': { $in: ['Delivery successful'] },
                             'orders.shipping_process.date': {
                                 $gte: now.toString()
                             }
@@ -411,7 +411,7 @@ const getTopUserHighestOrder = async (role) => {
             const resultTopUser = await getDB().collection('users').aggregate([
                 {
                     $match: {
-                        'orders.status': { $in: ['Being transported', 'Payment information confirmed', 'Delivered to the carrier', 'Ordered', 'Delivery successful'] },
+                        'orders.status': { $in: ['Delivery successful'] },
                         'orders.shipping_process': {
                             $elemMatch: {
                                 date: { $gte: now.toString() }
@@ -453,16 +453,14 @@ const getTopUserHighestValueAll = async (role) => {
                         }
                     },
                     {
-                        $unwind: '$orders'
+                        $unwind: '$orders',
                     },
                     {
                         $match: {
-                            'orders.status': { $in: ['Being transported', 'Payment information confirmed', 'Delivered to the carrier', 'Ordered', 'Delivery successful'] }
+                            'orders.status': { $in: ['Delivery successful'] }
                         }
                     },
-                    {
-                        $sort: { 'orders.sumOrder': -1 }
-                    },
+                    
                     {
                         $group: {
                             _id: '$_id',
@@ -471,6 +469,9 @@ const getTopUserHighestValueAll = async (role) => {
                     },
                     {
                         $replaceRoot: { newRoot: '$user' }
+                    },
+                    {
+                        $sort: { 'orders.sumOrder': -1 }
                     },
                     {
                         $limit: 10
