@@ -180,9 +180,9 @@ const getTotalSoldInMonth = async (role) => {
             currentDate.setDate(1)
             const today = new Date()
             const currentYear = today.getFullYear();
-            const firstDayOfYear = new Date(currentYear, 0, 1)
+            const firstDayOfYear = new Date(currentYear, 0, 2)
             const lastDayOfYear = new Date(currentYear, 11, 32)
-            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const [
                 resultTotal
@@ -298,9 +298,9 @@ const getTotalChartSoldInMonth = async (role) => {
             currentDate.setDate(1)
             const today = new Date()
             const currentYear = today.getFullYear();
-            const firstDayOfYear = new Date(currentYear, 0, 1)
+            const firstDayOfYear = new Date(currentYear, 0, 2)
             const lastDayOfYear = new Date(currentYear, 11, 32)
-            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             
             // const [

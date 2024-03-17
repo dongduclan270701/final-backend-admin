@@ -95,10 +95,10 @@ const getTotalSoldAndProfitOfMonth = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const today = new Date()
-            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const currentYear = today.getFullYear();
-            const firstDayOfYear = new Date(currentYear, 0, 1)
+            const firstDayOfYear = new Date(currentYear, 0, 2)
             const lastDayOfYear = new Date(currentYear, 11, 32)
             const [
                 totalSoldAndProfit
@@ -150,10 +150,10 @@ const getTotalViewInMonth = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const today = new Date()
-            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const currentYear = today.getFullYear();
-            const firstDayOfYear = new Date(currentYear, 0, 1)
+            const firstDayOfYear = new Date(currentYear, 0, 2)
             const lastDayOfYear = new Date(currentYear, 11, 32)
             const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
@@ -197,7 +197,7 @@ const getTotalSoldInYear = async (data, role) => {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const today = new Date()
             const currentYear = today.getFullYear();
-            const firstDayOfYear = new Date(currentYear, 0, 1)
+            const firstDayOfYear = new Date(currentYear, 0, 2)
             const lastDayOfYear = new Date(currentYear, 11, 32)
             const [
                 totalSoldInYear
@@ -241,7 +241,7 @@ const getTotalViewInYear = async (data, role) => {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const today = new Date()
             const currentYear = today.getFullYear();
-            const firstDayOfYear = new Date(currentYear, 0, 1)
+            const firstDayOfYear = new Date(currentYear, 0, 2)
             const lastDayOfYear = new Date(currentYear, 11, 32)
             const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
@@ -284,7 +284,7 @@ const getTotalSoldByDay = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const today = new Date()
-            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const [
                 totalSoldByDay
@@ -332,7 +332,7 @@ const getTotalViewByDay = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const today = new Date()
-            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const [
                 totalViewByDay
@@ -438,7 +438,7 @@ const getSoldProductsByCategory = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const today = new Date()
-            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
@@ -490,7 +490,7 @@ const getTopSoldProducts = async (data, role) => {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const limit = 10
             const today = new Date()
-            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
@@ -536,7 +536,7 @@ const getTopViewProducts = async (data, role) => {
     try {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const today = new Date()
-            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 2)
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const limit = 10
             const aggregationResult = await getDB().collection(data.collection).aggregate([
