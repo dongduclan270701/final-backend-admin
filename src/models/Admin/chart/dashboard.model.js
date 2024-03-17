@@ -79,7 +79,7 @@ const getTotalOrder = async (role) => {
     try {
         const today = new Date()
         const currentYear = today.getFullYear();
-        const firstDayOfYear = new Date(currentYear, 0, 2)
+        const firstDayOfYear = new Date(currentYear, 0, 1)
         const lastDayOfYear = new Date(currentYear, 11, 32)
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
