@@ -98,7 +98,7 @@ const getTotalSoldAndProfitOfMonth = async (data, role) => {
             const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const currentYear = today.getFullYear();
-            const firstDayOfYear = new Date(currentYear, 0, 2)
+            const firstDayOfYear = new Date(currentYear, 0, 1)
             const lastDayOfYear = new Date(currentYear, 11, 32)
             const [
                 totalSoldAndProfit
@@ -153,7 +153,7 @@ const getTotalViewInMonth = async (data, role) => {
             const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
             const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
             const currentYear = today.getFullYear();
-            const firstDayOfYear = new Date(currentYear, 0, 2)
+            const firstDayOfYear = new Date(currentYear, 0, 1)
             const lastDayOfYear = new Date(currentYear, 11, 32)
             const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {
@@ -197,7 +197,7 @@ const getTotalSoldInYear = async (data, role) => {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const today = new Date()
             const currentYear = today.getFullYear();
-            const firstDayOfYear = new Date(currentYear, 0, 2)
+            const firstDayOfYear = new Date(currentYear, 0, 1)
             const lastDayOfYear = new Date(currentYear, 11, 32)
             const [
                 totalSoldInYear
@@ -241,7 +241,7 @@ const getTotalViewInYear = async (data, role) => {
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const today = new Date()
             const currentYear = today.getFullYear();
-            const firstDayOfYear = new Date(currentYear, 0, 2)
+            const firstDayOfYear = new Date(currentYear, 0, 1)
             const lastDayOfYear = new Date(currentYear, 11, 32)
             const aggregationResult = await getDB().collection(data.collection).aggregate([
                 {

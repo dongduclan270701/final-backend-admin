@@ -18,7 +18,7 @@ const getTopSoldProducts = async (data, role) => {
                         img: 1,
                         nowPrice: 1,
                         quantity: 1,
-                        totalSold: { $sum: '$soldInMonth.sold' }
+                        totalSold: { $sum: '$showInYear.sold' }
                     }
                 },
                 {
@@ -54,7 +54,7 @@ const getTopViewProducts = async (data, role) => {
                         category: 1,
                         nowPrice: 1,
                         quantity: 1,
-                        totalView: { $sum: '$viewInMonth.view' }
+                        totalView: { $sum: '$viewInYear.view' }
                     }
                 },
                 {
@@ -79,7 +79,7 @@ const getTotalOrder = async (role) => {
     try {
         const today = new Date()
         const currentYear = today.getFullYear();
-        const firstDayOfYear = new Date(currentYear, 0, 2)
+        const firstDayOfYear = new Date(currentYear, 0, 1)
         const lastDayOfYear = new Date(currentYear, 11, 32)
         if (role.role === 'CEO' || role.role === 'MANAGEMENT') {
             const [
