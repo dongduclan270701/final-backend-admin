@@ -3,7 +3,6 @@ import { requestController } from '*/controllers/Admin/request.controller'
 import jwt from 'jsonwebtoken'
 import { HttpStatusCode } from '*/utils/constants'
 const router = express.Router()
-const axios = require('axios')
 
 const authAdmin = (req, res, next) => {
     const token = req.header('auth-token-admin')
